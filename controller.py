@@ -2,8 +2,6 @@ import UI
 import sys
 import database as db
 
-print('controller started')
-
 
 def functions():
     # ui.btn_open.clicked.connect(lambda: open_db())
@@ -21,9 +19,11 @@ def new():
         new_db = db.Database(path)
         new_db.create()
         ui.input.setText('')
+    return
+
 
 # def add():
-#
+#     current().
 
 
 app = UI.QtWidgets.QApplication(sys.argv)

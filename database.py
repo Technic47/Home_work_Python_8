@@ -117,12 +117,3 @@ class Database:
         finally:
             if (sqlite_connection):
                 sqlite_connection.close()
-
-# db = Database('databases/new.db')
-# db.show_path()
-# db.test_connect()
-# db.create()
-# db.add("'Pavel', 32, 2354234")
-# db.add("'Andrey', 55, 24265")
-# db.add("'Svetlana', 50, 8798754")
-# db.show()

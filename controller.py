@@ -1,27 +1,29 @@
 import UI
 import sys
+import database as db
 
 print('controller started')
 
 
 def functions():
-    ui.btn_open.clicked.connect(lambda: open_db())
+    # ui.btn_open.clicked.connect(lambda: open_db())
     ui.btn_add.clicked.connect(lambda: add())
+    ui.btn_new.clicked.connect(lambda: new())
 
 
-def open_db():
-    print('open')
-    with open('setup.txt', 'r') as text:
-        reader = text.read()
-        ui.textBrowser.setText(
-            reader
-        )
+def new():
+    folder = 'databases/'
+    name = ui.input.text()
+    if name == '':
+        ui.textBrowser.setText('Print name of a new database above!')
+    else:
+        path = folder + name + '.db'
+        new_db = db.Database(path)
+        new_db.create()
+        ui.input.setText('')
 
-
-def add():
-    with open('setup.txt', 'a') as text:
-        data = ui.input.text()
-        writer = text.write(data)
+# def add():
+#
 
 
 app = UI.QtWidgets.QApplication(sys.argv)

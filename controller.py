@@ -1,7 +1,11 @@
+import sqlite3
+
 import UI
 import sys
 import database as db
+from PyQt5 import QtCore, QtGui, QtWidgets, QtSql
 from PyQt5.QtWidgets import QMessageBox, QInputDialog, QLineEdit
+# from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
 
 
 def buttons():
@@ -26,17 +30,53 @@ def new():
     db.create(db_name, db_cols)
 
 
-def open_db()
+def open_db():
+    ui.table.setColumnCount(3)
+    ui.table.setColumnWidth(0, 150)
+    ui.table.setColumnWidth(1, 150)
+    ui.table.setColumnWidth(2, 150)
+    ui.table.setHorizontalHeaderLabels(["Col1", "Col2", "Col3"])
+    print('1')
+    current_db = db.show_current()
+    dbase = sqlite3.connect(current_db)
+    cur = dbase.cursor()
+    print(current_db)
+    query = "SELECT * FROM db_1"
+
+    tablerow = 0
+    print('query')
+    for row in cur.execute(query):
+        ui.table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
+        ui.table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
+        ui.table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+        tablerow += 1
+    # dbase = QSqlDatabase.addDatabase(current_db)
+    # print(current_db)
+    # dbase.setDatabaseName('Your DB')
+    # dbase.open()
+    # print('DB opened')
+    #
+    # model = QSqlTableModel()
+    # model.setTable("Table")
+    # model.setEditStrategy(QSqlTableModel.OnManualSubmit)
+    # model.select()
+    # ui.tableWidget.setModel(model)
 
 
 def add():
+    pass
     data = ui.input.text()
     if data == '':
-        ui.textBrowser.setText('Print name of a new database above!')
+        error = QMessageBox()
+        error.setWindowTitle("Error")
+        error.setText("Empty line!")
+        error.setIcon(QMessageBox.Warning)
+        error.setStandardButtons(QMessageBox.Ok)
+        error.setInformativeText("Write data in message box.")
+        error.exec_()
     else:
         db.add(data)
         ui.input.setText('')
-        ui.textBrowser.setText('')
 
 
 app = UI.QtWidgets.QApplication(sys.argv)

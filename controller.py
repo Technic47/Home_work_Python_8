@@ -3,11 +3,8 @@ import sqlite3
 import UI
 import sys
 import database as db
-from PyQt5 import QtCore, QtGui, QtWidgets, QtSql
-from PyQt5.QtWidgets import QMessageBox, QInputDialog, QLineEdit
-
-
-# from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QMessageBox, QInputDialog
 
 
 def buttons():
@@ -33,22 +30,25 @@ def new():
 
 
 def open_db():
-    ui.table.setColumnCount(3)
-    ui.table.setColumnWidth(0, 150)
-    ui.table.setColumnWidth(1, 150)
-    ui.table.setColumnWidth(2, 150)
-    ui.table.setHorizontalHeaderLabels(["Col1", "Col2", "Col3"])
     name = db.show_current()
     current_db = db.data_path + '/' + name + '.db'
     dbase = sqlite3.connect(current_db)
     cur = dbase.cursor()
-    print(current_db)
+    cur.execute(f'PRAGMA table_info({name})')
+    column_names = [i[1] for i in cur.fetchall()]
+    print(column_names)
+
+    ui.table.setColumnCount(len(column_names))
+    for i in range(len(column_names)):
+        ui.table.setColumnWidth(i, 75)
+    ui.table.setHorizontalHeaderLabels(column_names)
+
     query = f"SELECT * FROM {name}"
-    print(query)
+
     ui.table.setRowCount(50)
 
     tablerow = 0
-    print('query')
+
     for row in cur.execute(query):
         ui.table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
         ui.table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))

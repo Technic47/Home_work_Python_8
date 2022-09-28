@@ -50,9 +50,8 @@ def open_db():
     tablerow = 0
 
     for row in cur.execute(query):
-        ui.table.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
-        ui.table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
-        ui.table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
+        for i in range(len(column_names)):
+            ui.table.setItem(tablerow, i, QtWidgets.QTableWidgetItem(row[i]))
         tablerow += 1
 
 

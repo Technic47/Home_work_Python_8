@@ -144,6 +144,25 @@ def search(data):
     return record
 
 
+def merge(path, method):
+    name = show_current()
+    current_db = data_path + '/' + name + '.db'
+    try:
+        sqlite_connection = sqlite3.connect(current_db)
+        sql_delete = f'''SELECT * FROM {name} WHERE text1 = ?'''
+        cursor = sqlite_connection.cursor()
+        cursor.execute(sql_delete, (data,))
+        record = cursor.fetchall()
+        print("Selected")
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Ошибка при подключении к sqlite", error)
+    finally:
+        if (sqlite_connection):
+            sqlite_connection.close()
+
+
 # def sql_constructor(action, data):
 #     name = show_current()
 #     current_db = data_path + '/' + name + '.db'

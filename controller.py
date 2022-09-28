@@ -2,9 +2,10 @@ import sqlite3
 import messages
 import UI
 import sys
+import os
 import database as db
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMessageBox, QInputDialog
+from PyQt5.QtWidgets import QMessageBox, QInputDialog, QComboBox
 
 
 def buttons():
@@ -13,6 +14,9 @@ def buttons():
     ui.btn_new.clicked.connect(lambda: new())
     ui.btn_delete.clicked.connect(lambda: delete())
     ui.btn_search.clicked.connect(lambda: search())
+    ui.btn_merge.clicked.connect(lambda: merge())
+    ui.select_db.clicked.connect(lambda: select())
+    db_dir()
 
 
 def new():
@@ -25,8 +29,9 @@ def new():
                                         'Enter columns names:')
         if ok and cols != '':
             db_cols = str(cols)
-
             db.create(db_name, db_cols)
+            item = db_name + '.db'
+            ui.db_list.addItem(item)
 
 
 def open_db():
@@ -73,6 +78,42 @@ def search():
         table_draw(rows, fill)
 
 
+def merge():
+    data = ui.input.text()
+    if data == '':
+        messages.error("Empty line!", "Write your request in message box.")
+    else:
+        path = ui.input.setText('')
+        select = ui.merge_select
+        match select.currentIndex():
+            case 0:
+                data = select.currentText()
+            case 1:
+                data = select.currentText()
+            case 2:
+                data = select.currentText()
+            case 3:
+                data = select.currentText()
+            case 4:
+                data = select.currentText()
+            case 5:
+                data = select.currentText()
+            case 6:
+                data = select.currentText()
+        db.merge(path, data)
+
+
+def db_dir():
+    dirname = 'databases'
+    for filename in os.listdir(dirname):
+        ui.db_list.addItem(filename)
+
+
+def select():
+    new_db = ui.db_list.currentText().split('.')
+    db.set_current(new_db[0])
+
+
 def table_draw(rows_count, fill):
     name = db.show_current()
     current_db = db.data_path + '/' + name + '.db'
@@ -95,6 +136,8 @@ def table_draw(rows_count, fill):
         tablerow += 1
 
     ui.table.setSortingEnabled(1)
+
+
 
 
 app = UI.QtWidgets.QApplication(sys.argv)

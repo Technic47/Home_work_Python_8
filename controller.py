@@ -34,26 +34,12 @@ def open_db():
     current_db = db.data_path + '/' + name + '.db'
     dbase = sqlite3.connect(current_db)
     cur = dbase.cursor()
-
-    cur.execute(f'PRAGMA table_info({name})')
-    column_names = [i[1] for i in cur.fetchall()]
-    ui.table.setColumnCount(len(column_names))
-    for i in range(len(column_names)):
-        ui.table.setColumnWidth(i, 75)
-    ui.table.setHorizontalHeaderLabels(column_names)
-
     cur.execute(f"SELECT COUNT(1) FROM {name}")
     cols_number = cur.fetchall()
-    ui.table.setRowCount(cols_number[0][0])
-
+    rows = cols_number[0][0]
     query = f"SELECT * FROM {name}"
-    tablerow = 0
-    for row in cur.execute(query):
-        for i in range(len(column_names)):
-            ui.table.setItem(tablerow, i, QtWidgets.QTableWidgetItem(row[i]))
-        tablerow += 1
-
-    ui.table.setSortingEnabled(1)
+    fill = cur.execute(query)
+    table_draw(rows, fill)
 
 
 def add():
@@ -76,32 +62,39 @@ def delete():
 
 def search():
     data = ui.input.text()
-    name = db.show_current()
-    current_db = db.data_path + '/' + name + '.db'
-    dbase = sqlite3.connect(current_db)
-    cur = dbase.cursor()
     if data == '':
         messages.error("Empty line!", "Write your request in message box.")
     else:
         results = (db.search(data))
         ui.input.setText('')
 
-        cur.execute(f'PRAGMA table_info({name})')
-        column_names = [i[1] for i in cur.fetchall()]
-        ui.table.setColumnCount(len(column_names))
+        rows = len(results)
+        fill = results
+        table_draw(rows, fill)
+
+
+def table_draw(rows_count, fill):
+    name = db.show_current()
+    current_db = db.data_path + '/' + name + '.db'
+    dbase = sqlite3.connect(current_db)
+    cur = dbase.cursor()
+
+    cur.execute(f'PRAGMA table_info({name})')
+    column_names = [i[1] for i in cur.fetchall()]
+    ui.table.setColumnCount(len(column_names))
+    for i in range(len(column_names)):
+        ui.table.setColumnWidth(i, 75)
+    ui.table.setHorizontalHeaderLabels(column_names)
+
+    ui.table.setRowCount(rows_count)
+
+    tablerow = 0
+    for row in fill:
         for i in range(len(column_names)):
-            ui.table.setColumnWidth(i, 75)
-        ui.table.setHorizontalHeaderLabels(column_names)
-        ui.table.setRowCount(len(results))
+            ui.table.setItem(tablerow, i, QtWidgets.QTableWidgetItem(row[i]))
+        tablerow += 1
 
-        # query = f"SELECT * FROM {name}"
-        tablerow = 0
-        for row in results:
-            for i in range(len(column_names)):
-                ui.table.setItem(tablerow, i, QtWidgets.QTableWidgetItem(row[i]))
-            tablerow += 1
-
-        ui.table.setSortingEnabled(1)
+    ui.table.setSortingEnabled(1)
 
 
 app = UI.QtWidgets.QApplication(sys.argv)

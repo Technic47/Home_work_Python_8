@@ -129,15 +129,11 @@ def search(data):
     current_db = data_path + '/' + name + '.db'
     try:
         sqlite_connection = sqlite3.connect(current_db)
-        print(data)
-
         sql_delete = f'''SELECT * FROM {name} WHERE text1 = ?'''
         cursor = sqlite_connection.cursor()
         cursor.execute(sql_delete, (data,))
         record = cursor.fetchall()
         print("Selected")
-        print(record)
-
         cursor.close()
 
     except sqlite3.Error as error:

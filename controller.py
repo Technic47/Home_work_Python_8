@@ -12,6 +12,7 @@ def buttons():
     ui.btn_add.clicked.connect(lambda: add())
     ui.btn_new.clicked.connect(lambda: new())
     ui.btn_delete.clicked.connect(lambda: delete())
+    ui.btn_search.clicked.connect(lambda: search())
 
 
 def new():
@@ -41,11 +42,11 @@ def open_db():
         ui.table.setColumnWidth(i, 75)
     ui.table.setHorizontalHeaderLabels(column_names)
 
-    query = f"SELECT * FROM {name}"
     cur.execute(f"SELECT COUNT(1) FROM {name}")
     cols_number = cur.fetchall()
     ui.table.setRowCount(cols_number[0][0])
 
+    query = f"SELECT * FROM {name}"
     tablerow = 0
     for row in cur.execute(query):
         for i in range(len(column_names)):
@@ -71,6 +72,37 @@ def delete():
     else:
         db.delete(data)
         ui.input.setText('')
+
+
+def search():
+    data = ui.input.text()
+    name = db.show_current()
+    current_db = db.data_path + '/' + name + '.db'
+    dbase = sqlite3.connect(current_db)
+    cur = dbase.cursor()
+    if data == '':
+        messages.error("Empty line!", "Write your request in message box.")
+    else:
+        results = (db.search(data))
+        ui.input.setText('')
+
+        cur.execute(f'PRAGMA table_info({name})')
+        column_names = [i[1] for i in cur.fetchall()]
+        ui.table.setColumnCount(len(column_names))
+        for i in range(len(column_names)):
+            ui.table.setColumnWidth(i, 75)
+        ui.table.setHorizontalHeaderLabels(column_names)
+        ui.table.setRowCount(len(results))
+
+        # query = f"SELECT * FROM {name}"
+        tablerow = 0
+        for row in results:
+            for i in range(len(column_names)):
+                ui.table.setItem(tablerow, i, QtWidgets.QTableWidgetItem(row[i]))
+            tablerow += 1
+
+        ui.table.setSortingEnabled(1)
+
 
 app = UI.QtWidgets.QApplication(sys.argv)
 MainWindow = UI.QtWidgets.QMainWindow()

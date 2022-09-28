@@ -33,6 +33,7 @@ def open_db():
     current_db = db.data_path + '/' + name + '.db'
     dbase = sqlite3.connect(current_db)
     cur = dbase.cursor()
+
     cur.execute(f'PRAGMA table_info({name})')
     column_names = [i[1] for i in cur.fetchall()]
     ui.table.setColumnCount(len(column_names))
@@ -41,12 +42,17 @@ def open_db():
     ui.table.setHorizontalHeaderLabels(column_names)
 
     query = f"SELECT * FROM {name}"
-    ui.table.setRowCount(50)
+    cur.execute(f"SELECT COUNT(1) FROM {name}")
+    cols_number = cur.fetchall()
+    ui.table.setRowCount(cols_number[0][0])
+
     tablerow = 0
     for row in cur.execute(query):
         for i in range(len(column_names)):
             ui.table.setItem(tablerow, i, QtWidgets.QTableWidgetItem(row[i]))
         tablerow += 1
+
+    ui.table.setSortingEnabled(1)
 
 
 def add():

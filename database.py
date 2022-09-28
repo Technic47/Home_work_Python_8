@@ -88,15 +88,6 @@ def delete(data):
     current_db = data_path + '/' + name + '.db'
     try:
         sqlite_connection = sqlite3.connect(current_db)
-        # data_raw = data.replace(';', ',').replace('.', ',').replace(',', ',').replace(' ', ',')
-        # data_raw = data_raw.replace(',,', ',').split(',')
-        # print(data_raw)
-        # string = ''
-        # print(string)
-        # for item in data_raw:
-        #     string += "(" + item + "," + ")"
-        # string = string.replace(")(", "),(")
-        # data = "[" + string + "]"
         print(data)
 
         sql_delete = f'''DELETE FROM {name} WHERE text1 = ?'''

@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QMessageBox
 
 
 def error(description: str, action: str):
+    """pop up error message constructor"""
     error = QMessageBox()
     error.setWindowTitle("Error")
     error.setText(description)

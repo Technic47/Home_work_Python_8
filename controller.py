@@ -5,10 +5,11 @@ import sys
 import os
 import database as db
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMessageBox, QInputDialog, QComboBox
+from PyQt5.QtWidgets import QInputDialog
 
 
 def buttons():
+    """behavior of UI buttons"""
     ui.btn_open.clicked.connect(lambda: open_db())
     ui.btn_add.clicked.connect(lambda: add())
     ui.btn_new.clicked.connect(lambda: new())
@@ -20,6 +21,7 @@ def buttons():
 
 
 def new():
+    """creation of a new DB via two dialogs"""
     name, ok = QInputDialog.getText(ui.input, 'Input Dialog',
                                     'Enter db name:')
     if ok and name != '':
@@ -35,6 +37,7 @@ def new():
 
 
 def open_db():
+    """opens current db in tablewidget"""
     name = db.show_current()
     current_db = db.data_path + '/' + name + '.db'
     dbase = sqlite3.connect(current_db)
@@ -48,6 +51,7 @@ def open_db():
 
 
 def add():
+    """adds record to current db"""
     data = ui.input.text()
     if data == '':
         messages.error("Empty line!", "Write data in message box.")
@@ -57,6 +61,7 @@ def add():
 
 
 def delete():
+    """deletes in current db inputted data"""
     data = ui.input.text()
     if data == '':
         messages.error("Empty line!", "Write rows numbers in message box.")
@@ -66,6 +71,7 @@ def delete():
 
 
 def search():
+    """search data in current db"""
     data = ui.input.text()
     if data == '':
         messages.error("Empty line!", "Write your request in message box.")
@@ -78,43 +84,46 @@ def search():
         table_draw(rows, fill)
 
 
-def merge():
-    data = ui.input.text()
-    if data == '':
-        messages.error("Empty line!", "Write your request in message box.")
-    else:
-        path = ui.input.setText('')
-        select = ui.merge_select
-        match select.currentIndex():
-            case 0:
-                data = select.currentText()
-            case 1:
-                data = select.currentText()
-            case 2:
-                data = select.currentText()
-            case 3:
-                data = select.currentText()
-            case 4:
-                data = select.currentText()
-            case 5:
-                data = select.currentText()
-            case 6:
-                data = select.currentText()
-        db.merge(path, data)
+# def merge(): # do not work yet
+#     data = ui.input.text()
+#     if data == '':
+#         messages.error("Empty line!", "Write your request in message box.")
+#     else:
+#         path = ui.input.setText('')
+#         select = ui.merge_select
+#         match select.currentIndex():
+#             case 0:
+#                 data = select.currentText()
+#             case 1:
+#                 data = select.currentText()
+#             case 2:
+#                 data = select.currentText()
+#             case 3:
+#                 data = select.currentText()
+#             case 4:
+#                 data = select.currentText()
+#             case 5:
+#                 data = select.currentText()
+#             case 6:
+#                 data = select.currentText()
+#         db.merge(path, data)
 
 
 def db_dir():
+    """scan dbs and add it to combobox"""
     dirname = 'databases'
     for filename in os.listdir(dirname):
         ui.db_list.addItem(filename)
 
 
 def select():
+    """set selected db in combobox as current"""
     new_db = ui.db_list.currentText().split('.')
     db.set_current(new_db[0])
 
 
 def table_draw(rows_count, fill):
+    """ui tablewidget filling function"""
     name = db.show_current()
     current_db = db.data_path + '/' + name + '.db'
     dbase = sqlite3.connect(current_db)
@@ -136,8 +145,6 @@ def table_draw(rows_count, fill):
         tablerow += 1
 
     ui.table.setSortingEnabled(1)
-
-
 
 
 app = UI.QtWidgets.QApplication(sys.argv)

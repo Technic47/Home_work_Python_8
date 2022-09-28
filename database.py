@@ -22,6 +22,7 @@ import sqlite3
 
 
 def create(name, data):
+    """forming CREATE sql task"""
     path = data_path + '/' + name + '.db'
     try:
         sqlite_connection = sqlite3.connect(path)
@@ -57,27 +58,8 @@ def show_current() -> str:
     return current_database
 
 
-def test_connect():
-    try:
-        sqlite_connection = sqlite3.connect('sqlite_python.db')
-        cursor = sqlite_connection.cursor()
-        print("База данных создана и успешно подключена к SQLite")
-
-        sqlite_select_query = "select sqlite_version();"
-        cursor.execute(sqlite_select_query)
-        record = cursor.fetchall()
-        print("Версия базы данных SQLite: ", record)
-        cursor.close()
-
-    except sqlite3.Error as error:
-        print("Ошибка при подключении к sqlite", error)
-    finally:
-        if (sqlite_connection):
-            sqlite_connection.close()
-            print("Соединение с SQLite закрыто")
-
-
 def add(data):
+    """forming INSERT sql task"""
     name = show_current()
     current_db = data_path + '/' + name + '.db'
     try:
@@ -104,6 +86,7 @@ def add(data):
 
 
 def delete(data):
+    """forming DELETE sql task"""
     name = show_current()
     current_db = data_path + '/' + name + '.db'
     try:
@@ -125,6 +108,7 @@ def delete(data):
 
 
 def search(data):
+    """forming SELECT sql task"""
     name = show_current()
     current_db = data_path + '/' + name + '.db'
     try:
@@ -144,26 +128,26 @@ def search(data):
     return record
 
 
-def merge(path, method):
-    name = show_current()
-    current_db = data_path + '/' + name + '.db'
-    try:
-        sqlite_connection = sqlite3.connect(current_db)
-        sql_delete = f'''SELECT * FROM {name} WHERE text1 = ?'''
-        cursor = sqlite_connection.cursor()
-        cursor.execute(sql_delete, (data,))
-        record = cursor.fetchall()
-        print("Selected")
-        cursor.close()
+# def merge(path, method): # do not work yet
+#     name = show_current()
+#     current_db = data_path + '/' + name + '.db'
+#     try:
+#         sqlite_connection = sqlite3.connect(current_db)
+#         sql_delete = f'''SELECT * FROM {name} WHERE text1 = ?'''
+#         cursor = sqlite_connection.cursor()
+#         cursor.execute(sql_delete, (data,))
+#         record = cursor.fetchall()
+#         print("Selected")
+#         cursor.close()
+#
+#     except sqlite3.Error as error:
+#         print("Ошибка при подключении к sqlite", error)
+#     finally:
+#         if (sqlite_connection):
+#             sqlite_connection.close()
 
-    except sqlite3.Error as error:
-        print("Ошибка при подключении к sqlite", error)
-    finally:
-        if (sqlite_connection):
-            sqlite_connection.close()
 
-
-# def sql_constructor(action, data):
+# def sql_constructor(action, data): # stupid idea
 #     name = show_current()
 #     current_db = data_path + '/' + name + '.db'
 #     try:

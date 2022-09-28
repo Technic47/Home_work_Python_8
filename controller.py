@@ -1,5 +1,5 @@
 import sqlite3
-
+import messages
 import UI
 import sys
 import database as db
@@ -14,19 +14,17 @@ def buttons():
 
 
 def new():
-    db_name = ''
-    db_cols = ''
     name, ok = QInputDialog.getText(ui.input, 'Input Dialog',
                                     'Enter db name:')
     if ok and name != '':
         db_name = str(name)
 
-    cols, ok = QInputDialog.getText(ui.input, 'Set columns',
-                                    'Enter columns names:')
-    if ok and cols != '':
-        db_cols = str(cols)
+        cols, ok = QInputDialog.getText(ui.input, 'Set columns',
+                                        'Enter columns names:')
+        if ok and cols != '':
+            db_cols = str(cols)
 
-    db.create(db_name, db_cols)
+            db.create(db_name, db_cols)
 
 
 def open_db():
@@ -36,19 +34,14 @@ def open_db():
     cur = dbase.cursor()
     cur.execute(f'PRAGMA table_info({name})')
     column_names = [i[1] for i in cur.fetchall()]
-    print(column_names)
-
     ui.table.setColumnCount(len(column_names))
     for i in range(len(column_names)):
         ui.table.setColumnWidth(i, 75)
     ui.table.setHorizontalHeaderLabels(column_names)
 
     query = f"SELECT * FROM {name}"
-
     ui.table.setRowCount(50)
-
     tablerow = 0
-
     for row in cur.execute(query):
         for i in range(len(column_names)):
             ui.table.setItem(tablerow, i, QtWidgets.QTableWidgetItem(row[i]))
@@ -58,13 +51,7 @@ def open_db():
 def add():
     data = ui.input.text()
     if data == '':
-        error = QMessageBox()
-        error.setWindowTitle("Error")
-        error.setText("Empty line!")
-        error.setIcon(QMessageBox.Warning)
-        error.setStandardButtons(QMessageBox.Ok)
-        error.setInformativeText("Write data in message box.")
-        error.exec_()
+        messages.error("Empty line!", "Write data in message box.")
     else:
         db.add(data)
         ui.input.setText('')

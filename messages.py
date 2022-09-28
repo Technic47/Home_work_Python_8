@@ -1,9 +1,13 @@
-# error = QMessageBox()
-# error.setWindowTitle("Error")
-# error.setText("Empty db name!")
-# error.setIcon(QMessageBox.Warning)
-# error.setStandardButtons(QMessageBox.Ok)
-# # error.setDefaultButton(QMessageBox.Ok)
-# error.setInformativeText("Write name in message box.")
-# # error.setDetailedText('Details of error')
-# error.exec_()
+from PyQt5.QtWidgets import QMessageBox
+
+
+def error(description: str, action: str):
+    error = QMessageBox()
+    error.setWindowTitle("Error")
+    error.setText(description)
+    error.setIcon(QMessageBox.Warning)
+    error.setStandardButtons(QMessageBox.Ok)
+    # error.setDefaultButton(QMessageBox.Ok)
+    error.setInformativeText(action)
+    # error.setDetailedText('Details of error')
+    error.exec_()

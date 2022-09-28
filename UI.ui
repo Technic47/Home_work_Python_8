@@ -55,7 +55,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>10</y>
+      <y>40</y>
       <width>71</width>
       <height>23</height>
      </rect>
@@ -94,7 +94,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>40</y>
+      <y>10</y>
       <width>71</width>
       <height>23</height>
      </rect>
@@ -103,7 +103,7 @@
      <string>New</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_import_csv">
+   <widget class="QPushButton" name="btn_export_csv">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -113,10 +113,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>Import csv</string>
+     <string>Export csv</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_8">
+   <widget class="QPushButton" name="btn_import_csv_2">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -126,7 +126,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Import csv</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_9">

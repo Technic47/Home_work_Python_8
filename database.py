@@ -57,10 +57,6 @@ def test_connect():
             print("Соединение с SQLite закрыто")
 
 
-def open_current():
-    pass
-
-
 def add(data):
     name = show_current()
     current_db = data_path + '/' + name + '.db'
@@ -81,42 +77,22 @@ def add(data):
     finally:
         if (sqlite_connection):
             sqlite_connection.close()
-    # try:
-    #     sqlite_connection = sqlite3.connect(path)
-    #     cursor = sqlite_connection.cursor()
-    #     insert = f"""INSERT INTO new VALUES ({data})"""
-    #     cursor.execute(insert)
-    #     sqlite_connection.commit()
-    #
-    #     cursor.close()
-    #
-    # except sqlite3.Error as error:
-    #     print("Ошибка при подключении к sqlite", error)
-    # finally:
-    #     if (sqlite_connection):
-    #         sqlite_connection.close()
 
 
-def show(path):
-    try:
-        sqlite_connection = sqlite3.connect(path)
-        cursor = sqlite_connection.cursor()
+def open_current():
+    pass
 
-        select = "SELECT rowid, * FROM new"
-        cursor.execute(select)
-        items = cursor.fetchall()
-        for i in items:
-            print(i)
-
-        # print(cursor.fetchall())
-        sqlite_connection.commit()
-        cursor.close()
-
-    except sqlite3.Error as error:
-        print("Ошибка при подключении к sqlite", error)
-    finally:
-        if (sqlite_connection):
-            sqlite_connection.close()
+# try:
+#
+#
+#
+#     cur.close()
+#
+# except sqlite3.Error as error:
+#     print("Ошибка при подключении к sqlite", error)
+# finally:
+#     if (dbase):
+#         dbase.close()
 
 
 data_path = r'databases'

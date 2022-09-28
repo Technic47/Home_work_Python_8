@@ -11,6 +11,7 @@ def buttons():
     ui.btn_open.clicked.connect(lambda: open_db())
     ui.btn_add.clicked.connect(lambda: add())
     ui.btn_new.clicked.connect(lambda: new())
+    ui.btn_delete.clicked.connect(lambda: delete())
 
 
 def new():
@@ -56,6 +57,14 @@ def add():
         db.add(data)
         ui.input.setText('')
 
+
+def delete():
+    data = ui.input.text()
+    if data == '':
+        messages.error("Empty line!", "Write rows numbers in message box.")
+    else:
+        db.delete(data)
+        ui.input.setText('')
 
 app = UI.QtWidgets.QApplication(sys.argv)
 MainWindow = UI.QtWidgets.QMainWindow()

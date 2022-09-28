@@ -63,13 +63,47 @@ def add(data):
     try:
         sqlite_connection = sqlite3.connect(current_db)
         data_raw = data.replace(';', ',').replace('.', ',').replace(',', ',').replace(' ', ',')
-        data_raw = data_raw.replace(',,', ',')
-        data = data_raw.split(',')
-        insert = f'''INSERT INTO {name} VALUES ('{data[0]}', '{data[1]}', '{data[2]}')'''
+        data_raw = data_raw.replace(',,', ',').split(',')
+        string = ''
+        for item in data_raw:
+            string += "'" + item + "'"
+        data = string.replace("''", "', '")
+
+        insert = f'''INSERT INTO {name} VALUES ({data})'''
         cursor = sqlite_connection.cursor()
         cursor.execute(insert)
         sqlite_connection.commit()
         print("Added")
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Ошибка при подключении к sqlite", error)
+    finally:
+        if (sqlite_connection):
+            sqlite_connection.close()
+
+
+def delete(data):
+    name = show_current()
+    current_db = data_path + '/' + name + '.db'
+    try:
+        sqlite_connection = sqlite3.connect(current_db)
+        # data_raw = data.replace(';', ',').replace('.', ',').replace(',', ',').replace(' ', ',')
+        # data_raw = data_raw.replace(',,', ',').split(',')
+        # print(data_raw)
+        # string = ''
+        # print(string)
+        # for item in data_raw:
+        #     string += "(" + item + "," + ")"
+        # string = string.replace(")(", "),(")
+        # data = "[" + string + "]"
+        print(data)
+
+        sql_delete = f'''DELETE FROM {name} WHERE text1 = ?'''
+        cursor = sqlite_connection.cursor()
+        cursor.execute(sql_delete, (data, ))
+        sqlite_connection.commit()
+        print("Deleted")
         cursor.close()
 
     except sqlite3.Error as error:

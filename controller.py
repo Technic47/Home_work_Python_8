@@ -5,6 +5,8 @@ import sys
 import database as db
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSql
 from PyQt5.QtWidgets import QMessageBox, QInputDialog, QLineEdit
+
+
 # from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlQueryModel
 
 
@@ -36,12 +38,14 @@ def open_db():
     ui.table.setColumnWidth(1, 150)
     ui.table.setColumnWidth(2, 150)
     ui.table.setHorizontalHeaderLabels(["Col1", "Col2", "Col3"])
-    print('1')
-    current_db = db.show_current()
+    name = db.show_current()
+    current_db = db.data_path + '/' + name + '.db'
     dbase = sqlite3.connect(current_db)
     cur = dbase.cursor()
     print(current_db)
-    query = "SELECT * FROM db_1"
+    query = f"SELECT * FROM {name}"
+    print(query)
+    ui.table.setRowCount(50)
 
     tablerow = 0
     print('query')
@@ -50,21 +54,9 @@ def open_db():
         ui.table.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
         ui.table.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
         tablerow += 1
-    # dbase = QSqlDatabase.addDatabase(current_db)
-    # print(current_db)
-    # dbase.setDatabaseName('Your DB')
-    # dbase.open()
-    # print('DB opened')
-    #
-    # model = QSqlTableModel()
-    # model.setTable("Table")
-    # model.setEditStrategy(QSqlTableModel.OnManualSubmit)
-    # model.select()
-    # ui.tableWidget.setModel(model)
 
 
 def add():
-    pass
     data = ui.input.text()
     if data == '':
         error = QMessageBox()

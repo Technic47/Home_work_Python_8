@@ -69,9 +69,7 @@ def add(data):
         data_raw = data.replace(';', ',').replace('.', ',').replace(',', ',').replace(' ', ',')
         data_raw = data_raw.replace(',,', ',')
         data = data_raw.split(',')
-        print(data)
         insert = f'''INSERT INTO {name} VALUES ('{data[0]}', '{data[1]}', '{data[2]}')'''
-        print(insert)
         cursor = sqlite_connection.cursor()
         cursor.execute(insert)
         sqlite_connection.commit()

@@ -52,7 +52,7 @@ class Ui_Dialog(object):
         self.table = QtWidgets.QTableWidget(Dialog)
         self.table.setGeometry(QtCore.QRect(10, 80, 401, 391))
         self.table.setRowCount(0)
-        self.table.setColumnCount(3)
+        self.table.setColumnCount(0)
         self.table.setObjectName("table")
 
         self.retranslateUi(Dialog)

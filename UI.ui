@@ -41,27 +41,14 @@
    <widget class="QPushButton" name="btn_import_csv">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>40</y>
+      <x>10</x>
+      <y>70</y>
       <width>71</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
      <string>Import csv</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="add_col">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>40</y>
-      <width>71</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add column</string>
     </property>
    </widget>
    <widget class="QPushButton" name="select_db">
@@ -93,19 +80,6 @@
    <widget class="QPushButton" name="btn_export_csv">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>70</y>
-      <width>71</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Export csv</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btn_search">
-    <property name="geometry">
-     <rect>
       <x>80</x>
       <y>70</y>
       <width>71</width>
@@ -113,7 +87,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Search</string>
+     <string>Export csv</string>
     </property>
    </widget>
   </widget>
@@ -143,80 +117,6 @@
     <number>0</number>
    </property>
   </widget>
-  <widget class="QGroupBox" name="groupBox_2">
-   <property name="geometry">
-    <rect>
-     <x>420</x>
-     <y>110</y>
-     <width>231</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string/>
-   </property>
-   <widget class="QPushButton" name="btn_merge">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>71</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Merge</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="merge_select">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>10</y>
-      <width>101</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="editable">
-     <bool>false</bool>
-    </property>
-    <item>
-     <property name="text">
-      <string>LEFT JOIN</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>LEFT NULL</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>RIGHT JOIN</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>RIGHT NUL</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>INNER JOIN</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>FULL JOIN</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>FULL NULL</string>
-     </property>
-    </item>
-   </widget>
-  </widget>
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
@@ -227,7 +127,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="New_DB">
     <attribute name="title">
@@ -246,7 +146,7 @@
     <widget class="QPushButton" name="btn_new">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>150</x>
        <y>200</y>
        <width>71</width>
        <height>23</height>
@@ -259,7 +159,7 @@
     <widget class="QPushButton" name="btn_new_column">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>150</x>
        <y>40</y>
        <width>71</width>
        <height>23</height>
@@ -323,7 +223,7 @@
       <rect>
        <x>0</x>
        <y>70</y>
-       <width>69</width>
+       <width>113</width>
        <height>22</height>
       </rect>
      </property>
@@ -346,7 +246,7 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>150</x>
        <y>10</y>
        <width>71</width>
        <height>23</height>
@@ -395,7 +295,7 @@
       <rect>
        <x>0</x>
        <y>70</y>
-       <width>69</width>
+       <width>113</width>
        <height>22</height>
       </rect>
      </property>
@@ -467,7 +367,7 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>150</x>
        <y>40</y>
        <width>71</width>
        <height>23</height>
@@ -480,7 +380,7 @@
     <widget class="QPushButton" name="btn_add">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>150</x>
        <y>200</y>
        <width>71</width>
        <height>23</height>
@@ -493,9 +393,114 @@
    </widget>
    <widget class="QWidget" name="tab">
     <attribute name="title">
-     <string>Del Col</string>
+     <string>Merge</string>
     </attribute>
-    <widget class="QLineEdit" name="del_name">
+    <widget class="QPushButton" name="btn_merge">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>200</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Merge</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="merge_method">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>100</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>UNION</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>LEFT JOIN</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>LEFT NULL</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>RIGHT JOIN</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>RIGHT NUL</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>INNER JOIN</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>FULL JOIN</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>FULL NULL</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QComboBox" name="db_list_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>100</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>     Method</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>10</y>
+       <width>91</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Second table name</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="current_cols">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -505,19 +510,120 @@
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_delete_2">
+    <widget class="QLineEdit" name="second_cols">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>0</x>
+       <y>70</y>
+       <width>113</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
        <y>40</y>
-       <width>71</width>
+       <width>91</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>Del column</string>
+      <string>Current table cols</string>
      </property>
     </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>70</y>
+       <width>91</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Second table cols</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>100</y>
+     <width>231</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string/>
+   </property>
+   <widget class="QPushButton" name="btn_select">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>70</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="select_column">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>113</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="select_request">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>113</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>10</y>
+      <width>71</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select column</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>40</y>
+      <width>71</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>    Request</string>
+    </property>
    </widget>
   </widget>
  </widget>

@@ -131,16 +131,18 @@ def delete(col, data):
             sqlite_connection.close()
 
 
-def search(data):
+def select(data, request):
     """forming SELECT sql task"""
     name = show_current()
     current_db = data_path + '/' + name + '.db'
+    sqlite_connection = False
     try:
         sqlite_connection = sqlite3.connect(current_db)
-        sql_delete = f'''SELECT * FROM {name} WHERE text1 = ?'''
+        sql_select = f'''SELECT * FROM {name} WHERE {data} = ?'''
         cursor = sqlite_connection.cursor()
-        cursor.execute(sql_delete, (data,))
+        cursor.execute(sql_select, (str(request),))
         record = cursor.fetchall()
+        print(record)
         print("Selected")
         cursor.close()
 
@@ -152,16 +154,21 @@ def search(data):
     return record
 
 
-# def merge(path, method): # do not work yet
+# def merge(data, data2, db_2): # не работает(((
 #     name = show_current()
 #     current_db = data_path + '/' + name + '.db'
+#     second_db = data_path + '/' + db_2 + '.db'
+#     sqlite_connection = False
 #     try:
 #         sqlite_connection = sqlite3.connect(current_db)
-#         sql_delete = f'''SELECT * FROM {name} WHERE text1 = ?'''
+#
+#         print('join prepare')
+#         sql_join = f'''SELECT {data} FROM {name} UNION SELECT {data2} FROM {db_2}'''
+#         print(sql_join)
 #         cursor = sqlite_connection.cursor()
-#         cursor.execute(sql_delete, (data,))
+#         cursor.execute(sql_join)
 #         record = cursor.fetchall()
-#         print("Selected")
+#         print("Joined")
 #         cursor.close()
 #
 #     except sqlite3.Error as error:
@@ -169,6 +176,7 @@ def search(data):
 #     finally:
 #         if (sqlite_connection):
 #             sqlite_connection.close()
+#     return record
 
 
 # def sql_constructor(action, data): # stupid idea

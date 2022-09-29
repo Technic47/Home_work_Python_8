@@ -15,9 +15,9 @@ def buttons():
     ui.btn_add.clicked.connect(lambda: add())
     ui.btn_new.clicked.connect(lambda: new())
     ui.btn_delete.clicked.connect(lambda: delete())
-    ui.btn_search.clicked.connect(lambda: search())
+    ui.btn_select.clicked.connect(lambda: select())
     # ui.btn_merge.clicked.connect(lambda: merge())
-    ui.select_db.clicked.connect(lambda: select())
+    ui.select_db.clicked.connect(lambda: select_db())
     ui.btn_new_column.clicked.connect(lambda: form_request_new())
 
 
@@ -134,21 +134,39 @@ def delete():
         open_db()
 
 
-def search():
+def select():
     """search data in current db"""
-    data = ui.input.text()
+    data = ui.select_column.text()
     if data == '':
-        messages.error("Empty line!", "Write your request in message box.")
+        messages.error("Empty line!", "Write name of the column!")
     else:
-        results = (db.search(data))
-        ui.input.setText('')
+        if ui.select_request.text() == '':
+            messages.error("Empty line!", "Write your request!")
+        else:
+            request = ui.select_request.text()
+            results = (db.select(data, request))
 
-        rows = len(results)
-        fill = results
-        table_draw(rows, fill)
+            rows = len(results)
+            fill = results
+            table_draw(rows, fill)
 
 
-# def merge(): # do not work yet
+# def merge():
+#     """merge data from current db and second one"""
+#     data = ui.current_cols.text()
+#     data2 = ui.second_cols.text()
+#     db_get = ui.db_list_2.currentText().split('.')
+#     db_2 = db_get[0]
+#     print(data, data2, db_2)
+#     if data == '' or data2 == '':
+#         messages.error("Empty line!", "Write col names in message box.")
+#     else:
+#         db.merge(data, data2, db_2)
+#
+#         # rows = len(results)
+#         # fill = results
+#         # table_draw(rows, fill)
+
 #     data = ui.input.text()
 #     if data == '':
 #         messages.error("Empty line!", "Write your request in message box.")
@@ -178,9 +196,10 @@ def db_dir():
     dirname = 'databases'
     for filename in os.listdir(dirname):
         ui.db_list.addItem(filename)
+        ui.db_list_2.addItem(filename)
 
 
-def select():
+def select_db():
     """set selected db in combobox as current"""
     new_db = ui.db_list.currentText().split('.')
     db.set_current(new_db[0])

@@ -21,6 +21,7 @@ def buttons():
     ui.select_db.clicked.connect(lambda: select_db())
     ui.btn_new_column.clicked.connect(lambda: form_request_new())
     ui.btn_import_json.clicked.connect(lambda: import_json())
+    ui.btn_export_json.clicked.connect(lambda: export_json())
 
 
 def new():
@@ -234,6 +235,7 @@ def table_draw(rows_count, fill):
 
 
 def import_json():
+    """import json file create new DB and adds data to it"""
     file = QFileDialog.getOpenFileName(None, 'Open file', '', 'json files (*.json);;ALL Files(*)')
     file = file[0].split('/')
     path = file[-1]
@@ -250,6 +252,13 @@ def import_json():
         for item in records:
             data = ', '.join(item.values())
             db.add_line(data)
+
+
+def export_json():  # бессовестно скопированно с чьего-то гита, каюсь, устал
+    """exports current DB to json"""
+    name = db.show_current()
+    current_db = db.data_path + '/' + name + '.db'
+    db.export_json(current_db)
 
 
 request_param = ''

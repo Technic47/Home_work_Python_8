@@ -1,41 +1,37 @@
 import sqlite3
 
 
-# def connect(func):
-#     def wrapper():
-#         name = show_current()
-#         current_db = data_path + '/' + name + '.db'
-#         try:
-#             sqlite_connection = sqlite3.connect(current_db)
-#             cursor = sqlite_connection.cursor()
-#             cursor.execute(func())
-#             sqlite_connection.commit()
-#             cursor.close()
-#
-#         except sqlite3.Error as error:
-#             print("Ошибка при подключении к sqlite", error)
-#         finally:
-#             if (sqlite_connection):
-#                 sqlite_connection.close()
-#
-#     return wrapper
+def connect(func):
+    def wrapper():
+        name = show_current()
+        current_db = data_path + '/' + name + '.db'
+        sqlite_connection = False
+        try:
+
+            sqlite_connection = sqlite3.connect(current_db)
+            cursor = sqlite_connection.cursor()
+            # func()
+            cursor.execute(func())
+            sqlite_connection.commit()
+            cursor.close()
+
+        except sqlite3.Error as error:
+            print("Ошибка при подключении к sqlite", error)
+        finally:
+            if (sqlite_connection):
+                sqlite_connection.close()
+
+    return wrapper
 
 
 def create(name, data):
     """forming CREATE sql task"""
     path = data_path + '/' + name + '.db'
+    sqlite_connection = False
     try:
         sqlite_connection = sqlite3.connect(path)
-        # cols_raw = data.replace(';', ',').replace('.', ',').replace(' ', ',')
-        # cols_raw = cols_raw.replace(',,', ',')
-        # cols = cols_raw.replace(',', ', ')
-        cols_raw = data.replace(';', ',').replace('.', ',').split(',')
-        print(cols_raw)
-        cols = ''
-        for item in cols_raw:
-            print(item)
-        print(cols)
-        sqlite_create_table_query = f'''CREATE TABLE IF NOT EXISTS {name} ({cols})'''
+
+        sqlite_create_table_query = f'''CREATE TABLE {name} {data}'''
 
         cursor = sqlite_connection.cursor()
         cursor.execute(sqlite_create_table_query)
@@ -91,16 +87,16 @@ def add(data):
             sqlite_connection.close()
 
 
-def delete(data):
+def delete(col, data):
     """forming DELETE sql task"""
     name = show_current()
     current_db = data_path + '/' + name + '.db'
     try:
         sqlite_connection = sqlite3.connect(current_db)
-        print(data)
-
-        sql_delete = f'''DELETE FROM {name} WHERE text1 = ?'''
         cursor = sqlite_connection.cursor()
+        print(col, data)
+        sql_delete = f'''DELETE FROM {name} WHERE {col} = ?'''
+
         cursor.execute(sql_delete, (data,))
         sqlite_connection.commit()
         print("Deleted")

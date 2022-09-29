@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QInputDialog
 def buttons():
     """behavior of UI buttons"""
     db_dir()
-    ui.btn_open.clicked.connect(lambda: open_db())
+    open_db()
     ui.btn_add.clicked.connect(lambda: add())
     ui.btn_new.clicked.connect(lambda: new())
     ui.btn_delete.clicked.connect(lambda: delete())
@@ -27,10 +27,10 @@ def new():
     request_full = ''
     name = ui.new_name.text()
     if name != '':
-        request_full += name + '(' + request_param + ')'
+        request_full += '(' + request_param + ')'
         request_full = request_full.replace(', )', ')')
         ui.input.setText(request_full)
-        print(request_full)
+        db.create(name, request_full)
     else:
         messages.error("Empty line!", "Write name of your DB")
 
@@ -51,19 +51,27 @@ def new():
 def form_request():
     global request_param
     string = ''
-    string += ui.new_column.text() + ' '
-    string += ui.data_type.currentText() + ' '
-    if ui.primary_key.isChecked():
-        string += ui.primary_key.text() + ' '
-    if ui.not_null.isChecked():
-        string += ui.not_null.text() + ' '
-    string += ','
-    string = string.replace(' ,', ', ')
-    request_param += string
-    ui.input.setText(request_param)
-    ui.new_column.clear()
-    ui.primary_key.setChecked(False)
-    print(string)
+    match ui.new_column.text():
+        case '':
+            messages.error("Empty line!", "Name your column!")
+        case _:
+            string += ui.new_column.text() + ' '
+            if ui.primary_key.isChecked():
+                ui.not_null.setChecked(True)
+                string += ui.data_type.itemText(1) + ' '
+                string += ui.primary_key.text() + ' '
+            else:
+                string += ui.data_type.currentText() + ' '
+            if ui.not_null.isChecked():
+                string += ui.not_null.text() + ' '
+            string += ','
+            string = string.replace(' ,', ', ')
+            request_param += string
+            ui.input.setText(request_param)
+            ui.new_column.clear()
+            ui.primary_key.setChecked(False)
+            ui.not_null.setChecked(False)
+            print(string)
 
 
 def open_db():
@@ -72,7 +80,7 @@ def open_db():
     current_db = db.data_path + '/' + name + '.db'
     dbase = sqlite3.connect(current_db)
     cur = dbase.cursor()
-    cur.execute(f"SELECT COUNT(1) FROM {name}")
+    cur.execute(f"SELECT COUNT(2) FROM {name}")
     cols_number = cur.fetchall()
     rows = cols_number[0][0]
     query = f"SELECT * FROM {name}"
@@ -88,6 +96,7 @@ def add():
     else:
         db.add(data)
         ui.input.setText('')
+        open_db()
 
 
 def delete():
@@ -96,8 +105,12 @@ def delete():
     if data == '':
         messages.error("Empty line!", "Write rows numbers in message box.")
     else:
-        db.delete(data)
+        data_raw = data.replace(';', ',').replace('.', ',').replace(',', ',').replace(' ', ',')
+        data = data_raw.replace(',,', ',').split(',')
+        print(data)
+        db.delete(data[0], data[1])
         ui.input.setText('')
+        open_db()
 
 
 def search():
@@ -150,6 +163,7 @@ def select():
     """set selected db in combobox as current"""
     new_db = ui.db_list.currentText().split('.')
     db.set_current(new_db[0])
+    open_db()
 
 
 def table_draw(rows_count, fill):
@@ -157,10 +171,10 @@ def table_draw(rows_count, fill):
     name = db.show_current()
     current_db = db.data_path + '/' + name + '.db'
     dbase = sqlite3.connect(current_db)
-    cur = dbase.cursor()
+    cursor = dbase.cursor()
 
-    cur.execute(f'PRAGMA table_info({name})')
-    column_names = [i[1] for i in cur.fetchall()]
+    cursor.execute(f'PRAGMA table_info({name})')
+    column_names = [i[1] for i in cursor.fetchall()]
     ui.table.setColumnCount(len(column_names))
     for i in range(len(column_names)):
         ui.table.setColumnWidth(i, 75)
@@ -171,7 +185,7 @@ def table_draw(rows_count, fill):
     tablerow = 0
     for row in fill:
         for i in range(len(column_names)):
-            ui.table.setItem(tablerow, i, QtWidgets.QTableWidgetItem(row[i]))
+            ui.table.setItem(tablerow, i, QtWidgets.QTableWidgetItem(str(row[i])))
         tablerow += 1
 
     ui.table.setSortingEnabled(1)

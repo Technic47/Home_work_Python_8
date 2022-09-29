@@ -140,6 +140,7 @@ def delete():
 def select():
     """search data in current db"""
     data = ui.select_column.text()
+    table_name = current_table()
     if data == '':
         messages.error("Empty line!", "Write name of the column!")
     else:
@@ -147,7 +148,7 @@ def select():
             messages.error("Empty line!", "Write your request!")
         else:
             request = ui.select_request.text()
-            results = (db.select(data, request))
+            results = (db.select(table_name, data, request))
 
             rows = len(results)
             fill = results

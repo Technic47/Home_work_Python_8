@@ -165,14 +165,14 @@ def delete(table_name, col, data):
             sqlite_connection.close()
 
 
-def select(data, request):
+def select(table_name, data, request):
     """forming SELECT * sql task"""
     name = show_current()
     current_db = data_path + '/' + name + '.db'
     sqlite_connection = False
     try:
         sqlite_connection = sqlite3.connect(current_db)
-        sql_select = f'''SELECT * FROM {name} WHERE {data} = ?'''
+        sql_select = f'''SELECT * FROM {table_name} WHERE {data} = ?'''
         cursor = sqlite_connection.cursor()
         cursor.execute(sql_select, (str(request),))
         record = cursor.fetchall()

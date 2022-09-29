@@ -25,32 +25,6 @@
    <property name="title">
     <string/>
    </property>
-   <widget class="QPushButton" name="btn_add">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>71</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btn_search">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>10</y>
-      <width>71</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Search</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btn_delete">
     <property name="geometry">
      <rect>
@@ -62,19 +36,6 @@
     </property>
     <property name="text">
      <string>Delete</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btn_export_csv">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>10</y>
-      <width>71</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Export csv</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_import_csv">
@@ -107,7 +68,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>70</y>
+      <y>10</y>
       <width>71</width>
       <height>23</height>
      </rect>
@@ -120,13 +81,39 @@
     <property name="geometry">
      <rect>
       <x>81</x>
-      <y>71</y>
+      <y>11</y>
       <width>139</width>
       <height>21</height>
      </rect>
     </property>
     <property name="editable">
      <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_export_csv">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>70</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Export csv</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_search">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>70</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Search</string>
     </property>
    </widget>
   </widget>
@@ -240,7 +227,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="New_DB">
     <attribute name="title">
@@ -372,8 +359,165 @@
    </widget>
    <widget class="QWidget" name="Add">
     <attribute name="title">
-     <string>Add</string>
+     <string>Add to current</string>
     </attribute>
+    <widget class="QRadioButton" name="ad_line">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>82</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add line</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="add_column">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>0</y>
+       <width>82</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add column</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="data_type_column">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>70</y>
+       <width>69</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>TEXT</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>INT</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Unique</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QCheckBox" name="primary_key_column">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>100</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>PRIMARY KEY</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_4">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>140</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>OPTION</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="not_null_column">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>120</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>NOT NULL</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="new_name_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>113</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>40</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>What to add</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_add">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>200</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Del Col</string>
+    </attribute>
+    <widget class="QLineEdit" name="del_name">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>113</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_delete_2">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>40</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Del column</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

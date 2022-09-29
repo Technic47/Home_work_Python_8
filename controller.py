@@ -11,18 +11,18 @@ from PyQt5.QtWidgets import QInputDialog
 def buttons():
     """behavior of UI buttons"""
     db_dir()
-    open_db()
+    # open_db()
     ui.btn_add.clicked.connect(lambda: add())
     ui.btn_new.clicked.connect(lambda: new())
     ui.btn_delete.clicked.connect(lambda: delete())
     ui.btn_search.clicked.connect(lambda: search())
     # ui.btn_merge.clicked.connect(lambda: merge())
     ui.select_db.clicked.connect(lambda: select())
-    ui.btn_new_column.clicked.connect(lambda: form_request())
+    ui.btn_new_column.clicked.connect(lambda: form_request_new())
 
 
 def new():
-    """creation of a new DB via two dialogs"""
+    """creation of a new DB via new_db tab"""
     global request_param
     request_full = ''
     name = ui.new_name.text()
@@ -31,24 +31,12 @@ def new():
         request_full = request_full.replace(', )', ')')
         ui.input.setText(request_full)
         db.create(name, request_full)
+        request_param = ''
     else:
         messages.error("Empty line!", "Write name of your DB")
 
-    # name, ok = QInputDialog.getText(ui.input, 'Input Dialog',
-    #                                 'Enter db name:')
-    # if ok and name != '':
-    #     db_name = str(name)
-    #
-    #     cols, ok = QInputDialog.getText(ui.input, 'Set columns',
-    #                                     'Enter columns names:\ncol1 params,col2 params...')
-    #     if ok and cols != '':
-    #         db_cols = str(cols)
-    #         db.create(db_name, db_cols)
-    #         item = db_name + '.db'
-    #         ui.db_list.addItem(item)
 
-
-def form_request():
+def form_request_new():
     global request_param
     string = ''
     match ui.new_column.text():
@@ -74,6 +62,25 @@ def form_request():
             print(string)
 
 
+def form_request_add_col():
+    global request_param
+    string = ''
+    if ui.primary_key_column.isChecked():
+        ui.not_null_column.setChecked(True)
+        string += ui.data_type_column.itemText(1) + ' '
+        string += ui.primary_key_column.text() + ' '
+    else:
+        string += ui.data_type_column.currentText() + ' '
+    if ui.not_null_column.isChecked():
+        string += ui.not_null_column.text()
+    request_param += string
+    ui.input.setText(request_param)
+    ui.new_column.clear()
+    ui.primary_key.setChecked(False)
+    ui.not_null.setChecked(False)
+    print(string)
+
+
 def open_db():
     """opens current db in tablewidget"""
     name = db.show_current()
@@ -89,14 +96,28 @@ def open_db():
 
 
 def add():
-    """adds record to current db"""
-    data = ui.input.text()
-    if data == '':
-        messages.error("Empty line!", "Write data in message box.")
-    else:
-        db.add(data)
-        ui.input.setText('')
-        open_db()
+    """adds record/column to current db"""
+    global request_param
+    data = ui.new_name_2.text()
+    match data:
+        case '':
+            messages.error("Empty line!", "Type your request!")
+        case _:
+            if ui.ad_line.isChecked():
+                db.add_line(data)
+                ui.input.setText('')
+                open_db()
+
+            if ui.add_column.isChecked():
+                name = ui.new_name_2.text()
+                if name != '':
+                    form_request_add_col()
+                    print(data, request_param)
+                else:
+                    messages.error("Empty line!", "Write name of your DB")
+                db.add_column(data, request_param)
+                ui.input.setText('')
+            request_param = ''
 
 
 def delete():

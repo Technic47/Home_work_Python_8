@@ -60,7 +60,7 @@ def show_current() -> str:
     return current_database
 
 
-def add(data):
+def add_line(data):
     """forming INSERT sql task"""
     name = show_current()
     current_db = data_path + '/' + name + '.db'
@@ -74,6 +74,28 @@ def add(data):
         data = string.replace("''", "', '")
 
         insert = f'''INSERT INTO {name} VALUES ({data})'''
+        cursor = sqlite_connection.cursor()
+        cursor.execute(insert)
+        sqlite_connection.commit()
+        print("Added")
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Ошибка при подключении к sqlite", error)
+    finally:
+        if (sqlite_connection):
+            sqlite_connection.close()
+
+
+def add_column(col, data):
+    """forming ALTER sql task"""
+    name = show_current()
+    current_db = data_path + '/' + name + '.db'
+    try:
+        sqlite_connection = sqlite3.connect(current_db)
+
+        insert = f'''ALTER TABLE {name} ADD COLUMN {col} {data}'''
+        print(insert)
         cursor = sqlite_connection.cursor()
         cursor.execute(insert)
         sqlite_connection.commit()

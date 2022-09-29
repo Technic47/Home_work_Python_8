@@ -23,7 +23,7 @@ class Ui_Dialog(object):
         self.btn_delete.setGeometry(QtCore.QRect(10, 40, 71, 23))
         self.btn_delete.setObjectName("btn_delete")
         self.btn_import_json = QtWidgets.QPushButton(self.groupBox)
-        self.btn_import_json.setGeometry(QtCore.QRect(10, 70, 71, 23))
+        self.btn_import_json.setGeometry(QtCore.QRect(150, 40, 71, 23))
         self.btn_import_json.setObjectName("btn_import_json")
         self.select_db = QtWidgets.QPushButton(self.groupBox)
         self.select_db.setGeometry(QtCore.QRect(10, 10, 71, 23))
@@ -33,7 +33,7 @@ class Ui_Dialog(object):
         self.db_list.setEditable(False)
         self.db_list.setObjectName("db_list")
         self.btn_export_json = QtWidgets.QPushButton(self.groupBox)
-        self.btn_export_json.setGeometry(QtCore.QRect(80, 70, 71, 23))
+        self.btn_export_json.setGeometry(QtCore.QRect(150, 70, 71, 23))
         self.btn_export_json.setObjectName("btn_export_json")
         self.input = QtWidgets.QLineEdit(Dialog)
         self.input.setGeometry(QtCore.QRect(10, 10, 401, 31))
@@ -176,7 +176,7 @@ class Ui_Dialog(object):
         self.label_8.setObjectName("label_8")
 
         self.retranslateUi(Dialog)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):

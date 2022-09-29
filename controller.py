@@ -17,7 +17,7 @@ def buttons():
     ui.btn_new.clicked.connect(lambda: new())
     ui.btn_delete.clicked.connect(lambda: delete())
     ui.btn_select.clicked.connect(lambda: select())
-    # ui.btn_merge.clicked.connect(lambda: merge())
+    ui.btn_merge.clicked.connect(lambda: merge())
     ui.select_db.clicked.connect(lambda: select_db())
     ui.btn_new_column.clicked.connect(lambda: form_request_new())
     ui.btn_import_json.clicked.connect(lambda: import_json())
@@ -154,21 +154,21 @@ def select():
             table_draw(rows, fill)
 
 
-# def merge():
-#     """merge data from current db and second one"""
-#     data = ui.current_cols.text()
-#     data2 = ui.second_cols.text()
-#     db_get = ui.db_list_2.currentText().split('.')
-#     db_2 = db_get[0]
-#     print(data, data2, db_2)
-#     if data == '' or data2 == '':
-#         messages.error("Empty line!", "Write col names in message box.")
-#     else:
-#         db.merge(data, data2, db_2)
-#
-#         # rows = len(results)
-#         # fill = results
-#         # table_draw(rows, fill)
+def merge():
+    """merge data from current db and second one"""
+    data = ui.current_cols.text()
+    data2 = ui.second_cols.text()
+    db_get = ui.db_list_2.currentText().split('.')
+    db_2 = db_get[0]
+    print(data, data2, db_2)
+    if data == '' or data2 == '':
+        messages.error("Empty line!", "Write col names in message box.")
+    else:
+        db.merge(data, data2, db_2)
+
+        # rows = len(results)
+        # fill = results
+        # table_draw(rows, fill)
 
 #     data = ui.input.text()
 #     if data == '':

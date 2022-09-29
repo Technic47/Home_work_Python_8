@@ -28,7 +28,7 @@ import messages
 #     return wrapper
 
 
-def create(name: str, data: str) -> bool:
+def create(name: str, data: str):
     """forming CREATE sql task"""
     path = data_path + '/' + name + '.db'
     if os.path.exists(path):
@@ -166,7 +166,6 @@ def select(data, request):
 
 
 def export_json(current_db):
-
     connection, cursor = openConnection(current_db)
     # select all the tables from the database
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
@@ -181,7 +180,6 @@ def export_json(current_db):
             the_file.write(results)
     # close connection
     connection.close()
-
 
 
 def getAllRecordsInTable(table_name, pathToSqliteDb):
@@ -209,29 +207,33 @@ def dict_factory(cursor, row):
     return d
 
 
-# def merge(data, data2, db_2): # не работает(((
-#     name = show_current()
-#     current_db = data_path + '/' + name + '.db'
-#     second_db = data_path + '/' + db_2 + '.db'
-#     sqlite_connection = False
-#     try:
-#         sqlite_connection = sqlite3.connect(current_db)
-#
-#         print('join prepare')
-#         sql_join = f'''SELECT {data} FROM {name} UNION SELECT {data2} FROM {db_2}'''
-#         print(sql_join)
-#         cursor = sqlite_connection.cursor()
-#         cursor.execute(sql_join)
-#         record = cursor.fetchall()
-#         print("Joined")
-#         cursor.close()
-#
-#     except sqlite3.Error as error:
-#         print("Ошибка при подключении к sqlite", error)
-#     finally:
-#         if (sqlite_connection):
-#             sqlite_connection.close()
-#     return record
+def merge(data, data2, db_2):  # не работает(((
+    name = show_current()
+    current_db = data_path + '/' + name + '.db'
+    target = 'target'
+    target_db = data_path + '/' + target + '.db'
+    sqlite_connection = False
+    try:
+        sqlite_connection = sqlite3.connect(target_db)
+
+        print('join prepare')
+        sql_join = f'''CREATE TABLE {target} AS SELECT {data} FROM {name}
+         UNION
+          SELECT {data2} FROM {db_2}'''
+        print(sql_join)
+        cursor = sqlite_connection.cursor()
+        cursor.execute(sql_join)
+        record = cursor.fetchall()
+        print("Joined")
+        set_current(target)
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Ошибка при подключении к sqlite", error)
+    finally:
+        if (sqlite_connection):
+            sqlite_connection.close()
+    return record
 
 
 data_path = r'databases'

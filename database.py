@@ -1,27 +1,27 @@
 import sqlite3
 
 
-def connect(func):
-    def wrapper():
-        name = show_current()
-        current_db = data_path + '/' + name + '.db'
-        sqlite_connection = False
-        try:
-
-            sqlite_connection = sqlite3.connect(current_db)
-            cursor = sqlite_connection.cursor()
-            # func()
-            cursor.execute(func())
-            sqlite_connection.commit()
-            cursor.close()
-
-        except sqlite3.Error as error:
-            print("Ошибка при подключении к sqlite", error)
-        finally:
-            if (sqlite_connection):
-                sqlite_connection.close()
-
-    return wrapper
+# def connect(func):
+#     def wrapper():
+#         name = show_current()
+#         current_db = data_path + '/' + name + '.db'
+#         sqlite_connection = False
+#         try:
+#
+#             sqlite_connection = sqlite3.connect(current_db)
+#             cursor = sqlite_connection.cursor()
+#             # func()
+#             cursor.execute(func())
+#             sqlite_connection.commit()
+#             cursor.close()
+#
+#         except sqlite3.Error as error:
+#             print("Ошибка при подключении к sqlite", error)
+#         finally:
+#             if (sqlite_connection):
+#                 sqlite_connection.close()
+#
+#     return wrapper
 
 
 def create(name, data):
@@ -31,8 +31,8 @@ def create(name, data):
     try:
         sqlite_connection = sqlite3.connect(path)
 
-        sqlite_create_table_query = f'''CREATE TABLE {name} {data}'''
-
+        sqlite_create_table_query = f'''CREATE TABLE IF NOT EXISTS {name} {data}'''
+        print(sqlite_create_table_query)
         cursor = sqlite_connection.cursor()
         cursor.execute(sqlite_create_table_query)
         sqlite_connection.commit()
@@ -72,8 +72,10 @@ def add_line(data):
         for item in data_raw:
             string += "'" + item + "'"
         data = string.replace("''", "', '")
+        print(data)
 
         insert = f'''INSERT INTO {name} VALUES ({data})'''
+        print(insert)
         cursor = sqlite_connection.cursor()
         cursor.execute(insert)
         sqlite_connection.commit()
@@ -132,7 +134,7 @@ def delete(col, data):
 
 
 def select(data, request):
-    """forming SELECT sql task"""
+    """forming SELECT * sql task"""
     name = show_current()
     current_db = data_path + '/' + name + '.db'
     sqlite_connection = False
@@ -177,36 +179,6 @@ def select(data, request):
 #         if (sqlite_connection):
 #             sqlite_connection.close()
 #     return record
-
-
-# def sql_constructor(action, data): # stupid idea
-#     name = show_current()
-#     current_db = data_path + '/' + name + '.db'
-#     try:
-#         sqlite_connection = sqlite3.connect(current_db)
-#         match action:
-#             case 'create':
-#                 sql_action = 'CREATE TABLE'
-#             case 'insert':
-#                 sql_action = 'INSERT INTO'
-#                 addition = 'VALUES'
-#             case 'delete':
-#                 sql_action = 'DELETE FROM'
-#                 addition = 'WHERE'
-#
-#
-#         sql_request = f'''{sql_action} {name} {addition} text1 = ?'''
-#         cursor = sqlite_connection.cursor()
-#         cursor.execute(sql_request)
-#         sqlite_connection.commit()
-#         print("Deleted")
-#         cursor.close()
-#
-#     except sqlite3.Error as error:
-#         print("Ошибка при подключении к sqlite", error)
-#     finally:
-#         if (sqlite_connection):
-#             sqlite_connection.close()
 
 
 data_path = r'databases'

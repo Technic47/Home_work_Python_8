@@ -1,11 +1,12 @@
 import sqlite3
+import json
 import messages
 import UI
 import sys
 import os
 import database as db
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtWidgets import QInputDialog, QFileDialog
 
 
 def buttons():
@@ -19,6 +20,7 @@ def buttons():
     # ui.btn_merge.clicked.connect(lambda: merge())
     ui.select_db.clicked.connect(lambda: select_db())
     ui.btn_new_column.clicked.connect(lambda: form_request_new())
+    ui.btn_import_json.clicked.connect(lambda: import_json())
 
 
 def new():
@@ -229,6 +231,27 @@ def table_draw(rows_count, fill):
         tablerow += 1
 
     ui.table.setSortingEnabled(1)
+
+
+def import_json():
+    file = QFileDialog.getOpenFileName(None, 'Open file', '', 'json files (*.json);;ALL Files(*)')
+    file = file[0].split('/')
+    path = file[-1]
+    name = path.split('.')
+    name = name[0]
+    with open(path, 'r', encoding='utf-8') as json_file:
+        records = json.load(json_file)
+
+    headers = ''
+    for item in records[:1]:
+        headers = ', '.join(item)
+    headers = '(' + headers + ')'
+    db.create(name, headers)
+    db.set_current(name)
+
+    for item in records:
+        data = ', '.join(item.values())
+        db.add_line(data)
 
 
 request_param = ''

@@ -1,4 +1,7 @@
+import os.path
 import sqlite3
+
+import messages
 
 
 # def connect(func):
@@ -24,27 +27,32 @@ import sqlite3
 #     return wrapper
 
 
-def create(name, data):
+def create(name: str, data: str) -> bool:
     """forming CREATE sql task"""
     path = data_path + '/' + name + '.db'
-    sqlite_connection = False
-    try:
-        sqlite_connection = sqlite3.connect(path)
+    if os.path.exists(path):
+        messages.error('File already exist!', '')
+        return
+    else:
+        sqlite_connection = False
+        try:
+            sqlite_connection = sqlite3.connect(path)
 
-        sqlite_create_table_query = f'''CREATE TABLE IF NOT EXISTS {name} {data}'''
-        print(sqlite_create_table_query)
-        cursor = sqlite_connection.cursor()
-        cursor.execute(sqlite_create_table_query)
-        sqlite_connection.commit()
-        print("Таблица SQLite создана")
-        set_current(name)
-        cursor.close()
+            sqlite_create_table_query = f'''CREATE TABLE IF NOT EXISTS {name} {data}'''
+            print(sqlite_create_table_query)
+            cursor = sqlite_connection.cursor()
+            cursor.execute(sqlite_create_table_query)
+            sqlite_connection.commit()
+            print("Таблица SQLite создана")
+            set_current(name)
+            cursor.close()
 
-    except sqlite3.Error as error:
-        print("Ошибка при подключении к sqlite", error)
-    finally:
-        if (sqlite_connection):
-            sqlite_connection.close()
+        except sqlite3.Error as error:
+            print("Ошибка при подключении к sqlite", error)
+        finally:
+            if (sqlite_connection):
+                sqlite_connection.close()
+        return True
 
 
 def set_current(data) -> None:

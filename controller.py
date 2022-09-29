@@ -246,12 +246,10 @@ def import_json():
     for item in records[:1]:
         headers = ', '.join(item)
     headers = '(' + headers + ')'
-    db.create(name, headers)
-    db.set_current(name)
-
-    for item in records:
-        data = ', '.join(item.values())
-        db.add_line(data)
+    if db.create(name, headers):
+        for item in records:
+            data = ', '.join(item.values())
+            db.add_line(data)
 
 
 request_param = ''

@@ -125,15 +125,16 @@ def add():
 def delete():
     """deletes in current table inputted data"""
     data = ui.input.text()
+    table_name = current_table()
     if data == '':
         messages.error("Empty line!", "Write rows numbers in message box.")
     else:
         data_raw = data.replace(';', ',').replace('.', ',').replace(',', ',').replace(' ', ',')
         data = data_raw.replace(',,', ',').split(',')
         print(data)
-        db.delete(data[0], data[1])
+        db.delete(table_name, data[0], data[1])
         ui.input.setText('')
-        open_table()
+        open_table(table_name)
 
 
 def select():

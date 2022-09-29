@@ -142,15 +142,16 @@ def add_column(table_name, col, data):
             sqlite_connection.close()
 
 
-def delete(col, data):
+def delete(table_name, col, data):
     """forming DELETE sql task"""
     name = show_current()
     current_db = data_path + '/' + name + '.db'
+    sqlite_connection = False
     try:
         sqlite_connection = sqlite3.connect(current_db)
         cursor = sqlite_connection.cursor()
         print(col, data)
-        sql_delete = f'''DELETE FROM {name} WHERE {col} = ?'''
+        sql_delete = f'''DELETE FROM {table_name} WHERE {col} = ?'''
 
         cursor.execute(sql_delete, (data,))
         sqlite_connection.commit()

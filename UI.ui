@@ -51,7 +51,7 @@
      <string>Import .json</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="select_db">
+   <widget class="QPushButton" name="select_table">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -61,10 +61,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>Select DB</string>
+     <string>Select Table</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="db_list">
+   <widget class="QComboBox" name="table_list">
     <property name="geometry">
      <rect>
       <x>81</x>
@@ -127,11 +127,11 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
-   <widget class="QWidget" name="New_DB">
+   <widget class="QWidget" name="New_Table">
     <attribute name="title">
-     <string>New DB</string>
+     <string>New Table</string>
     </attribute>
     <widget class="QLineEdit" name="new_column">
      <property name="geometry">
@@ -461,7 +461,7 @@
       </property>
      </item>
     </widget>
-    <widget class="QComboBox" name="db_list_2">
+    <widget class="QComboBox" name="table_list_2">
      <property name="geometry">
       <rect>
        <x>0</x>

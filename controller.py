@@ -3,29 +3,27 @@ import json
 import messages
 import UI
 import sys
-import os
 import database as db
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QInputDialog, QFileDialog
+from PyQt5.QtWidgets import QFileDialog
 
 
 def buttons():
     """behavior of UI buttons"""
-    db_dir()
-    # open_db()
+    tables()
     ui.btn_add.clicked.connect(lambda: add())
     ui.btn_new.clicked.connect(lambda: new())
     ui.btn_delete.clicked.connect(lambda: delete())
     ui.btn_select.clicked.connect(lambda: select())
     ui.btn_merge.clicked.connect(lambda: merge())
-    ui.select_db.clicked.connect(lambda: select_db())
+    ui.select_table.clicked.connect(lambda: select_table())
     ui.btn_new_column.clicked.connect(lambda: form_request_new())
     ui.btn_import_json.clicked.connect(lambda: import_json())
     ui.btn_export_json.clicked.connect(lambda: export_json())
 
 
 def new():
-    """creation of a new DB via new_db tab"""
+    """creation of a new Table via new_table tab"""
     global request_param
     request_full = ''
     name = ui.new_name.text()
@@ -84,16 +82,16 @@ def form_request_add_col():
     print(string)
 
 
-def open_db():
-    """opens current db in tablewidget"""
+def open_table(table_name):
+    """opens current table in tablewidget"""
     name = db.show_current()
     current_db = db.data_path + '/' + name + '.db'
     dbase = sqlite3.connect(current_db)
     cur = dbase.cursor()
-    cur.execute(f"SELECT COUNT(2) FROM {name}")
-    cols_number = cur.fetchall()
-    rows = cols_number[0][0]
-    query = f"SELECT * FROM {name}"
+    cur.execute(f"SELECT COUNT(0) FROM {table_name}")
+    rows_number = cur.fetchall()
+    rows = rows_number[0][0]
+    query = f"SELECT * FROM {table_name}"
     fill = cur.execute(query)
     table_draw(rows, fill)
 
@@ -102,14 +100,15 @@ def add():
     """adds record/column to current db"""
     global request_param
     data = ui.new_name_2.text()
+    table = current_table()
     match data:
         case '':
             messages.error("Empty line!", "Type your request!")
         case _:
             if ui.ad_line.isChecked():
-                db.add_line(data)
+                db.add_line(table, data)
                 ui.input.setText('')
-                open_db()
+                open_table(table)
 
             if ui.add_column.isChecked():
                 name = ui.new_name_2.text()
@@ -118,13 +117,13 @@ def add():
                     print(data, request_param)
                 else:
                     messages.error("Empty line!", "Write name of your DB")
-                db.add_column(data, request_param)
+                db.add_column(table, data, request_param)
                 ui.input.setText('')
             request_param = ''
 
 
 def delete():
-    """deletes in current db inputted data"""
+    """deletes in current table inputted data"""
     data = ui.input.text()
     if data == '':
         messages.error("Empty line!", "Write rows numbers in message box.")
@@ -134,7 +133,7 @@ def delete():
         print(data)
         db.delete(data[0], data[1])
         ui.input.setText('')
-        open_db()
+        open_table()
 
 
 def select():
@@ -158,7 +157,7 @@ def merge():
     """merge data from current db and second one"""
     data = ui.current_cols.text()
     data2 = ui.second_cols.text()
-    db_get = ui.db_list_2.currentText().split('.')
+    db_get = ui.table_list_2.currentText().split('.')
     db_2 = db_get[0]
     print(data, data2, db_2)
     if data == '' or data2 == '':
@@ -169,6 +168,7 @@ def merge():
         # rows = len(results)
         # fill = results
         # table_draw(rows, fill)
+
 
 #     data = ui.input.text()
 #     if data == '':
@@ -194,29 +194,34 @@ def merge():
 #         db.merge(path, data)
 
 
-def db_dir():
+def tables():
     """scan dbs and add it to combobox"""
-    dirname = 'databases'
-    for filename in os.listdir(dirname):
-        ui.db_list.addItem(filename)
-        ui.db_list_2.addItem(filename)
+    list = db.get_tables()
+    for table in list:
+        ui.table_list.addItem(table[1])
+        ui.table_list_2.addItem(table[1])
 
 
-def select_db():
+def select_table():
     """set selected db in combobox as current"""
-    new_db = ui.db_list.currentText().split('.')
-    db.set_current(new_db[0])
-    open_db()
+    current_table = ui.table_list.currentText()
+    open_table(current_table)
+
+
+def current_table():
+    table = ui.table_list.currentText()
+    return table
 
 
 def table_draw(rows_count, fill):
     """ui tablewidget filling function"""
     name = db.show_current()
     current_db = db.data_path + '/' + name + '.db'
+    table_name = current_table()
     dbase = sqlite3.connect(current_db)
     cursor = dbase.cursor()
 
-    cursor.execute(f'PRAGMA table_info({name})')
+    cursor.execute(f'PRAGMA table_info({table_name})')
     column_names = [i[1] for i in cursor.fetchall()]
     ui.table.setColumnCount(len(column_names))
     for i in range(len(column_names)):

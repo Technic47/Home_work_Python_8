@@ -28,32 +28,32 @@ import messages
 #     return wrapper
 
 
-def create(name: str, data: str):
+def create(table_name: str, data: str):
     """forming CREATE sql task"""
+    name = show_current()
     path = data_path + '/' + name + '.db'
-    if os.path.exists(path):
-        messages.error('File already exist!', '')
-        return
-    else:
-        sqlite_connection = False
-        try:
-            sqlite_connection = sqlite3.connect(path)
+    # if os.path.exists(path):
+    #     messages.error('File already exist!', '')
+    #     return
+    # else:
+    sqlite_connection = False
+    try:
+        sqlite_connection = sqlite3.connect(path)
 
-            sqlite_create_table_query = f'''CREATE TABLE IF NOT EXISTS {name} {data}'''
-            print(sqlite_create_table_query)
-            cursor = sqlite_connection.cursor()
-            cursor.execute(sqlite_create_table_query)
-            sqlite_connection.commit()
-            print("Таблица SQLite создана")
-            set_current(name)
-            cursor.close()
+        sqlite_create_table_query = f'''CREATE TABLE IF NOT EXISTS {table_name} {data}'''
+        print(sqlite_create_table_query)
+        cursor = sqlite_connection.cursor()
+        cursor.execute(sqlite_create_table_query)
+        sqlite_connection.commit()
+        print("Таблица SQLite создана")
+        cursor.close()
 
-        except sqlite3.Error as error:
-            print("Ошибка при подключении к sqlite", error)
-        finally:
-            if (sqlite_connection):
-                sqlite_connection.close()
-        return True
+    except sqlite3.Error as error:
+        print("Ошибка при подключении к sqlite", error)
+    finally:
+        if (sqlite_connection):
+            sqlite_connection.close()
+    return True
 
 
 def set_current(data) -> None:
@@ -69,10 +69,33 @@ def show_current() -> str:
     return current_database
 
 
-def add_line(data):
+def get_tables():
+    """forming SELECT sql task for getting tables list"""
+    name = show_current()
+    current_db = data_path + '/' + name + '.db'
+    sqlite_connection = False
+    try:
+        sqlite_connection = sqlite3.connect(current_db)
+        select = f'''SELECT * FROM sqlite_master WHERE type='table';'''
+        cursor = sqlite_connection.cursor()
+        cursor.execute(select)
+        list_of_tables = cursor.fetchall()
+        sqlite_connection.commit()
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Ошибка при подключении к sqlite", error)
+    finally:
+        if (sqlite_connection):
+            sqlite_connection.close()
+    return list_of_tables
+
+
+def add_line(table_name, data):
     """forming INSERT sql task"""
     name = show_current()
     current_db = data_path + '/' + name + '.db'
+    sqlite_connection = False
     try:
         sqlite_connection = sqlite3.connect(current_db)
         data_raw = data.replace(';', ',').replace('.', ',').replace(',', ',').replace(' ', ',')
@@ -81,10 +104,7 @@ def add_line(data):
         for item in data_raw:
             string += "'" + item + "'"
         data = string.replace("''", "', '")
-        print(data)
-
-        insert = f'''INSERT INTO {name} VALUES ({data})'''
-        print(insert)
+        insert = f'''INSERT INTO {table_name} VALUES ({data})'''
         cursor = sqlite_connection.cursor()
         cursor.execute(insert)
         sqlite_connection.commit()
@@ -98,14 +118,16 @@ def add_line(data):
             sqlite_connection.close()
 
 
-def add_column(col, data):
+def add_column(table_name, col, data):
     """forming ALTER sql task"""
+
     name = show_current()
     current_db = data_path + '/' + name + '.db'
+    sqlite_connection = False
     try:
         sqlite_connection = sqlite3.connect(current_db)
 
-        insert = f'''ALTER TABLE {name} ADD COLUMN {col} {data}'''
+        insert = f'''ALTER TABLE {table_name} ADD COLUMN {col} {data}'''
         print(insert)
         cursor = sqlite_connection.cursor()
         cursor.execute(insert)

@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QInputDialog
 
 def buttons():
     """behavior of UI buttons"""
+    db_dir()
     ui.btn_open.clicked.connect(lambda: open_db())
     ui.btn_add.clicked.connect(lambda: add())
     ui.btn_new.clicked.connect(lambda: new())
@@ -17,13 +18,21 @@ def buttons():
     ui.btn_search.clicked.connect(lambda: search())
     # ui.btn_merge.clicked.connect(lambda: merge())
     ui.select_db.clicked.connect(lambda: select())
-    db_dir()
+    ui.btn_new_column.clicked.connect(lambda: form_request())
 
 
 def new():
     """creation of a new DB via two dialogs"""
+    global request_param
+    request_full = ''
     name = ui.new_name.text()
     if name != '':
+        request_full += name + '(' + request_param + ')'
+        request_full = request_full.replace(', )', ')')
+        ui.input.setText(request_full)
+        print(request_full)
+    else:
+        messages.error("Empty line!", "Write name of your DB")
 
     # name, ok = QInputDialog.getText(ui.input, 'Input Dialog',
     #                                 'Enter db name:')
@@ -37,6 +46,24 @@ def new():
     #         db.create(db_name, db_cols)
     #         item = db_name + '.db'
     #         ui.db_list.addItem(item)
+
+
+def form_request():
+    global request_param
+    string = ''
+    string += ui.new_column.text() + ' '
+    string += ui.data_type.currentText() + ' '
+    if ui.primary_key.isChecked():
+        string += ui.primary_key.text() + ' '
+    if ui.not_null.isChecked():
+        string += ui.not_null.text() + ' '
+    string += ','
+    string = string.replace(' ,', ', ')
+    request_param += string
+    ui.input.setText(request_param)
+    ui.new_column.clear()
+    ui.primary_key.setChecked(False)
+    print(string)
 
 
 def open_db():
@@ -149,6 +176,8 @@ def table_draw(rows_count, fill):
 
     ui.table.setSortingEnabled(1)
 
+
+request_param = ''
 
 app = UI.QtWidgets.QApplication(sys.argv)
 MainWindow = UI.QtWidgets.QMainWindow()

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>659</width>
-    <height>479</height>
+    <height>469</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,19 +77,6 @@
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_new">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>10</y>
-      <width>71</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>New</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btn_export_csv">
     <property name="geometry">
      <rect>
@@ -146,7 +133,7 @@
      <x>10</x>
      <y>50</y>
      <width>401</width>
-     <height>421</height>
+     <height>411</height>
     </rect>
    </property>
    <property name="rowCount">
@@ -267,6 +254,152 @@
     <property name="editable">
      <bool>false</bool>
     </property>
+   </widget>
+  </widget>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>210</y>
+     <width>231</width>
+     <height>251</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="New_DB">
+    <attribute name="title">
+     <string>New DB</string>
+    </attribute>
+    <widget class="QLineEdit" name="new_column">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>113</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_new">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>200</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Create</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_new_column">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>40</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add column</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="new_name">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>113</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="primary_key">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>100</y>
+       <width>91</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>PRIMARY KEY</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="not_null">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>120</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>NOT NULL</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>140</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>OPTION</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="data_type">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>70</y>
+       <width>69</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>TEXT</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>INT</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Unique</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>10</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>  Table name</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="Add">
+    <attribute name="title">
+     <string>Add</string>
+    </attribute>
    </widget>
   </widget>
  </widget>

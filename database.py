@@ -26,10 +26,16 @@ def create(name, data):
     path = data_path + '/' + name + '.db'
     try:
         sqlite_connection = sqlite3.connect(path)
-        cols_raw = data.replace(';', ',').replace('.', ',').replace(',', ',').replace(' ', ',')
-        cols_raw = cols_raw.replace(',,', ',')
-        cols = cols_raw.replace(',', ', ')
-        sqlite_create_table_query = f'''CREATE TABLE {name} ({cols})'''
+        # cols_raw = data.replace(';', ',').replace('.', ',').replace(' ', ',')
+        # cols_raw = cols_raw.replace(',,', ',')
+        # cols = cols_raw.replace(',', ', ')
+        cols_raw = data.replace(';', ',').replace('.', ',').split(',')
+        print(cols_raw)
+        cols = ''
+        for item in cols_raw:
+            print(item)
+        print(cols)
+        sqlite_create_table_query = f'''CREATE TABLE IF NOT EXISTS {name} ({cols})'''
 
         cursor = sqlite_connection.cursor()
         cursor.execute(sqlite_create_table_query)

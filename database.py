@@ -230,25 +230,22 @@ def dict_factory(cursor, row):
     return d
 
 
-def merge(data, data2, db_2):  # не работает(((
+def merge(data, data2, table_1, table_2, method):  # работает хз как(((
     name = show_current()
     current_db = data_path + '/' + name + '.db'
     target = 'target'
-    target_db = data_path + '/' + target + '.db'
     sqlite_connection = False
     try:
-        sqlite_connection = sqlite3.connect(target_db)
-
+        sqlite_connection = sqlite3.connect(current_db)
         print('join prepare')
-        sql_join = f'''CREATE TABLE {target} AS SELECT {data} FROM {name}
+        sql_join = f'''CREATE TABLE IF NOT EXISTS {target} AS SELECT {data} FROM {table_1}
          UNION
-          SELECT {data2} FROM {db_2}'''
+          SELECT {data2} FROM {table_2}'''
         print(sql_join)
         cursor = sqlite_connection.cursor()
         cursor.execute(sql_join)
         record = cursor.fetchall()
         print("Joined")
-        set_current(target)
         cursor.close()
 
     except sqlite3.Error as error:

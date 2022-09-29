@@ -156,16 +156,19 @@ def select():
 
 
 def merge():
-    """merge data from current db and second one"""
+    """merge data from current table and second one"""
     data = ui.current_cols.text()
     data2 = ui.second_cols.text()
-    db_get = ui.table_list_2.currentText().split('.')
-    db_2 = db_get[0]
-    print(data, data2, db_2)
+    table_1 = current_table()
+    table_get = ui.table_list_2.currentText().split('.')
+    table_2 = table_get[0]
+    method = ui.merge_method.currentText()
+    print(data, data2, table_1, table_2, method)
     if data == '' or data2 == '':
         messages.error("Empty line!", "Write col names in message box.")
     else:
-        db.merge(data, data2, db_2)
+        print('before merge')
+        db.merge(data, data2, table_1, table_2, method)
 
         # rows = len(results)
         # fill = results

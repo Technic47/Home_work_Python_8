@@ -172,8 +172,8 @@ def select():
 
 def merge():
     """merge data from current table and second one"""
-    data = ui.current_cols.text()
-    data2 = ui.second_cols.text()
+    data = ui.current_cols_list.text()
+    data2 = ui.second_cols_list.text()
     table_1 = current_table()
     table_get = ui.table_list_2.currentText().split('.')
     table_2 = table_get[0]

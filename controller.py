@@ -21,19 +21,26 @@ def buttons():
     ui.btn_import_json.clicked.connect(lambda: import_json())
     ui.btn_export_json.clicked.connect(lambda: export_json())
     ui.btn_cols_info.clicked.connect(lambda: get_lists())
+    ui.btn_add_current_col.clicked.connect(lambda: form_request_select(ui.current_cols_list.currentText(), 0))
+    ui.btn_add_clause_col.clicked.connect(lambda: form_request_select(ui.clause_cols_list.currentText(), 1))
 
 
 def get_lists():
     ui.current_cols_list.clear()
-    ui.second_cols_list.clear()
-    current_table_results = cols_in_table(current_table())
+    ui.current_cols_list_2.clear()
+    ui.clause_cols_list.clear()
+    ui.current_cols_list.addItem('*')
+    current_table_results = get_cols(current_table())
     for i in current_table_results:
         ui.current_cols_list.addItem(i)
+        ui.clause_cols_list.addItem(i)
+        ui.current_cols_list_2.addItem(i)
 
     table_name = ui.table_list_2.currentText()
-    second_table_results = cols_in_table(table_name)
+    second_table_results = get_cols(table_name)
     for i in second_table_results:
-        ui.second_cols_list.addItem(i)
+        ui.current_cols_list.addItem(i)
+        ui.clause_cols_list.addItem(i)
 
 
 def new():
@@ -96,6 +103,15 @@ def form_request_add_col():
     print(string)
 
 
+def form_request_select(text, index):
+    global select_param
+    select_param[index].append(text)
+    table_1 = current_table()
+    table_2 = ui.table_list_2.currentText()
+    method = ui.merge_method.currentText()
+    ui.input.setText(f'SELECT {select_param[0]} FROM {table_1} {method} {table_2} {str(select_param[1])}')
+
+
 def open_table(table_name):
     """opens current table in tablewidget"""
     name = db.show_current()
@@ -117,7 +133,7 @@ def add():
     table = current_table()
     match data:
         case '':
-            messages.error("Empty line!", "Type your request!")
+            messages.error("Empty line!", "Type what to add!")
         case _:
             if ui.ad_line.isChecked():
                 db.add_line(table, data)
@@ -154,10 +170,10 @@ def delete():
 
 def select():
     """search data in current db"""
-    data = ui.select_column.text()
+    data = ui.current_cols_list_2.currentText()
     table_name = current_table()
     if data == '':
-        messages.error("Empty line!", "Write name of the column!")
+        messages.error("Empty line!", "Choose column!")
     else:
         if ui.select_request.text() == '':
             messages.error("Empty line!", "Write your request!")
@@ -172,20 +188,24 @@ def select():
 
 def merge():
     """merge data from current table and second one"""
-    data = ui.current_cols_list.text()
-    data2 = ui.second_cols_list.text()
+    global select_param
+    print('start')
+    cols = ', '.join(select_param[0])
+    clause = select_param[1][0]
     table_1 = current_table()
     table_get = ui.table_list_2.currentText().split('.')
     table_2 = table_get[0]
     method = ui.merge_method.currentText()
-    print(data, data2, table_1, table_2, method)
-    if data == '' or data2 == '':
-        messages.error("Empty line!", "Write col names in message box.")
+    print(cols, clause, table_1, table_2, method)
+    if cols == '' or clause == '':
+        messages.error("Empty line!", "Choose col names in message box.")
     else:
-        results = (db.merge(data, data2, table_1, table_2, method))
+        results = (db.merge(cols, clause, table_1, table_2, method))
         print(results)
         table_name = results[1]
         open_table(table_name)
+    ui.input.setText('')
+    select_param = [[], []]
 
 
 #     data = ui.input.text()
@@ -220,7 +240,7 @@ def tables():
         ui.table_list_2.addItem(table[1])
 
 
-def cols_in_table(table_name):
+def get_cols(table_name):
     name = db.show_current()
     current_db = db.data_path + '/' + name + '.db'
     dbase = sqlite3.connect(current_db)
@@ -285,7 +305,7 @@ def import_json():
     if db.create(name, headers):
         for item in records:
             data = ', '.join(item.values())
-            db.add_line(data)
+            db.add_line(name, data)
 
 
 def export_json():  # бессовестно скопированно с чьего-то гита, каюсь, устал
@@ -296,6 +316,7 @@ def export_json():  # бессовестно скопированно с чье�
 
 
 request_param = ''
+select_param = [[], []]
 
 app = UI.QtWidgets.QApplication(sys.argv)
 MainWindow = UI.QtWidgets.QMainWindow()

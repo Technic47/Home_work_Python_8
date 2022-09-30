@@ -19,57 +19,31 @@
      <x>420</x>
      <y>0</y>
      <width>231</width>
-     <height>101</height>
+     <height>71</height>
     </rect>
    </property>
    <property name="title">
     <string/>
    </property>
-   <widget class="QPushButton" name="btn_delete">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>40</y>
-      <width>71</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Delete</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btn_import_json">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>40</y>
-      <width>71</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Import .json</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="select_table">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>71</width>
+      <width>101</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Select Table</string>
+     <string>Main Table select</string>
     </property>
    </widget>
    <widget class="QComboBox" name="table_list">
     <property name="geometry">
      <rect>
-      <x>81</x>
+      <x>119</x>
       <y>11</y>
-      <width>139</width>
+      <width>101</width>
       <height>21</height>
      </rect>
     </property>
@@ -77,17 +51,30 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_export_json">
+   <widget class="QComboBox" name="table_list_2">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>70</y>
-      <width>71</width>
+      <x>119</x>
+      <y>41</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="editable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_cols_info">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>101</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Export .json</string>
+     <string>2nd Table select</string>
     </property>
    </widget>
   </widget>
@@ -121,14 +108,146 @@
    <property name="geometry">
     <rect>
      <x>420</x>
-     <y>210</y>
+     <y>260</y>
      <width>231</width>
-     <height>251</height>
+     <height>201</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Merge</string>
+    </attribute>
+    <widget class="QPushButton" name="btn_merge">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>150</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Merge</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="merge_method">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>70</y>
+       <width>80</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>LEFT JOIN</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>INNER JOIN</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>70</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>     Method</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>10</y>
+       <width>91</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string> Cols for request</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>40</y>
+       <width>91</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>   Merging clause</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="current_cols_list">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>80</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="clause_cols_list">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>80</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_add_current_col">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>9</y>
+       <width>31</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_add_clause_col">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>39</y>
+       <width>31</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+   </widget>
    <widget class="QWidget" name="New_Table">
     <attribute name="title">
      <string>New Table</string>
@@ -147,7 +266,7 @@
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>200</y>
+       <y>150</y>
        <width>71</width>
        <height>23</height>
       </rect>
@@ -381,255 +500,8 @@
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>200</y>
+       <y>150</y>
        <width>71</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Add</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tab">
-    <attribute name="title">
-     <string>Merge</string>
-    </attribute>
-    <widget class="QPushButton" name="btn_merge">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>200</y>
-       <width>71</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Merge</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="merge_method">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>100</y>
-       <width>80</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="editable">
-      <bool>false</bool>
-     </property>
-     <item>
-      <property name="text">
-       <string>UNION</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>LEFT JOIN</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>LEFT NULL</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>RIGHT JOIN</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>RIGHT NUL</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>INNER JOIN</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>FULL JOIN</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>FULL NULL</string>
-      </property>
-     </item>
-    </widget>
-    <widget class="QComboBox" name="table_list_2">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>10</y>
-       <width>80</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="editable">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>140</x>
-       <y>100</y>
-       <width>71</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>     Method</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_4">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>10</y>
-       <width>91</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Second table name</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="current_cols">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>130</y>
-       <width>80</width>
-       <height>23</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="second_cols">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>160</y>
-       <width>80</width>
-       <height>23</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>40</y>
-       <width>91</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Current table cols</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>70</y>
-       <width>91</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Second table cols</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="current_cols_list">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>40</y>
-       <width>80</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="editable">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="second_cols_list">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>70</y>
-       <width>80</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="editable">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_cols_info">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>200</y>
-       <width>71</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Get cols info</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_add_current_col">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>39</y>
-       <width>31</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Add</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_add_second_col">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>69</y>
-       <width>31</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Add</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_add_second_col_2">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>159</y>
-       <width>31</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Add</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_add_current_col_2">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>129</y>
-       <width>31</width>
        <height>23</height>
       </rect>
      </property>
@@ -643,9 +515,9 @@
    <property name="geometry">
     <rect>
      <x>420</x>
-     <y>100</y>
+     <y>80</y>
      <width>231</width>
-     <height>111</height>
+     <height>101</height>
     </rect>
    </property>
    <property name="title">
@@ -662,19 +534,6 @@
     </property>
     <property name="text">
      <string>Select</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="select_column">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>113</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
     </property>
    </widget>
    <widget class="QLineEdit" name="select_request">
@@ -714,6 +573,71 @@
     </property>
     <property name="text">
      <string>    Request</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="current_cols_list_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>111</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="editable">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>190</y>
+     <width>231</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string/>
+   </property>
+   <widget class="QPushButton" name="btn_export_json">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>10</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Export .json</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_import_json">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>10</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Import .json</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_delete">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Delete</string>
     </property>
    </widget>
   </widget>

@@ -1,8 +1,5 @@
-import os.path
 import sqlite3
 import json
-
-import messages
 
 
 # def connect(func):
@@ -32,10 +29,6 @@ def create(table_name: str, data: str):
     """forming CREATE sql task"""
     name = show_current()
     path = data_path + '/' + name + '.db'
-    # if os.path.exists(path):
-    #     messages.error('File already exist!', '')
-    #     return
-    # else:
     sqlite_connection = False
     try:
         sqlite_connection = sqlite3.connect(path)
@@ -230,7 +223,7 @@ def dict_factory(cursor, row):
     return d
 
 
-def merge(data, data2, table_1, table_2, method):  # работает хз как(((
+def merge(cols, clause, table_1, table_2, method):
     name = show_current()
     current_db = data_path + '/' + name + '.db'
     target = 'join_results'
@@ -240,18 +233,16 @@ def merge(data, data2, table_1, table_2, method):  # работает хз ка�
         cursor = sqlite_connection.cursor()
         print('deleting cache table')
         sql_delete = f'''DROP TABLE IF EXISTS {target}'''
-        print(sql_delete)
         cursor.execute(sql_delete)
         print('join prepare')
-        sql_join = f'''CREATE TABLE IF NOT EXISTS {target} AS SELECT Title, Name FROM albums
-         INNER JOIN
-          artists ON artists.ArtistId = albums.ArtistId;'''
+        sql_join = f'''CREATE TABLE IF NOT EXISTS {target} AS SELECT {cols} FROM {table_1}
+         {method}
+          {table_2} ON {table_2}.{clause} = {table_1}.{clause};'''
         print(sql_join)
 
         cursor.execute(sql_join)
         record = cursor.fetchall()
         print("Joined")
-        # print(record)
         cursor.close()
 
     except sqlite3.Error as error:

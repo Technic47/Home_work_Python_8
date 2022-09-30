@@ -233,19 +233,25 @@ def dict_factory(cursor, row):
 def merge(data, data2, table_1, table_2, method):  # работает хз как(((
     name = show_current()
     current_db = data_path + '/' + name + '.db'
-    target = 'target'
+    target = 'join_results'
     sqlite_connection = False
     try:
         sqlite_connection = sqlite3.connect(current_db)
-        print('join prepare')
-        sql_join = f'''CREATE TABLE IF NOT EXISTS {target} AS SELECT {data} FROM {table_1}
-         UNION
-          SELECT {data2} FROM {table_2}'''
-        print(sql_join)
         cursor = sqlite_connection.cursor()
+        print('deleting cache table')
+        sql_delete = f'''DROP TABLE IF EXISTS {target}'''
+        print(sql_delete)
+        cursor.execute(sql_delete)
+        print('join prepare')
+        sql_join = f'''CREATE TABLE IF NOT EXISTS {target} AS SELECT Title, Name FROM albums
+         INNER JOIN
+          artists ON artists.ArtistId = albums.ArtistId;'''
+        print(sql_join)
+
         cursor.execute(sql_join)
         record = cursor.fetchall()
         print("Joined")
+        # print(record)
         cursor.close()
 
     except sqlite3.Error as error:
@@ -253,7 +259,7 @@ def merge(data, data2, table_1, table_2, method):  # работает хз ка�
     finally:
         if (sqlite_connection):
             sqlite_connection.close()
-    return record
+    return record, target
 
 
 data_path = r'databases'

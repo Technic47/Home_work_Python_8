@@ -20,6 +20,20 @@ def buttons():
     ui.btn_new_column.clicked.connect(lambda: form_request_new())
     ui.btn_import_json.clicked.connect(lambda: import_json())
     ui.btn_export_json.clicked.connect(lambda: export_json())
+    ui.btn_cols_info.clicked.connect(lambda: get_lists())
+
+
+def get_lists():
+    ui.current_cols_list.clear()
+    ui.second_cols_list.clear()
+    current_table_results = cols_in_table(current_table())
+    for i in current_table_results:
+        ui.current_cols_list.addItem(i)
+
+    table_name = ui.table_list_2.currentText()
+    second_table_results = cols_in_table(table_name)
+    for i in second_table_results:
+        ui.second_cols_list.addItem(i)
 
 
 def new():
@@ -93,7 +107,7 @@ def open_table(table_name):
     rows = rows_number[0][0]
     query = f"SELECT * FROM {table_name}"
     fill = cur.execute(query)
-    table_draw(rows, fill)
+    table_draw(table_name, rows, fill)
 
 
 def add():
@@ -118,6 +132,7 @@ def add():
                 else:
                     messages.error("Empty line!", "Write name of your DB")
                 db.add_column(table, data, request_param)
+                open_table(table)
                 ui.input.setText('')
             request_param = ''
 
@@ -152,7 +167,7 @@ def select():
 
             rows = len(results)
             fill = results
-            table_draw(rows, fill)
+            table_draw(table_name, rows, fill)
 
 
 def merge():
@@ -167,12 +182,10 @@ def merge():
     if data == '' or data2 == '':
         messages.error("Empty line!", "Write col names in message box.")
     else:
-        print('before merge')
-        db.merge(data, data2, table_1, table_2, method)
-
-        # rows = len(results)
-        # fill = results
-        # table_draw(rows, fill)
+        results = (db.merge(data, data2, table_1, table_2, method))
+        print(results)
+        table_name = results[1]
+        open_table(table_name)
 
 
 #     data = ui.input.text()
@@ -207,10 +220,22 @@ def tables():
         ui.table_list_2.addItem(table[1])
 
 
+def cols_in_table(table_name):
+    name = db.show_current()
+    current_db = db.data_path + '/' + name + '.db'
+    dbase = sqlite3.connect(current_db)
+    cursor = dbase.cursor()
+
+    cursor.execute(f'PRAGMA table_info({table_name})')
+    column_names = [i[1] for i in cursor.fetchall()]
+    return column_names
+
+
 def select_table():
     """set selected db in combobox as current"""
     current_table = ui.table_list.currentText()
     open_table(current_table)
+    get_lists()
 
 
 def current_table():
@@ -218,11 +243,10 @@ def current_table():
     return table
 
 
-def table_draw(rows_count, fill):
+def table_draw(table_name, rows_count, fill):
     """ui tablewidget filling function"""
     name = db.show_current()
     current_db = db.data_path + '/' + name + '.db'
-    table_name = current_table()
     dbase = sqlite3.connect(current_db)
     cursor = dbase.cursor()
 

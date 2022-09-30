@@ -14,15 +14,15 @@ def error(description: str, action: str):
     error.exec_()
 
 
-def error_rewrite(description: str, action: str):
-    """pop up error message constructor"""
-    error = QMessageBox()
-    error.setWindowTitle("Error")
-    error.setText(description)
-    error.setIcon(QMessageBox.Warning)
-    error.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-    error.setInformativeText(action)
-    error.exec_()
+# def error_rewrite(description: str, action: str):
+#     """pop up error message constructor"""
+#     error = QMessageBox()
+#     error.setWindowTitle("Error")
+#     error.setText(description)
+#     error.setIcon(QMessageBox.Warning)
+#     error.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+#     error.setInformativeText(action)
+#     error.exec_()
 
     # name, ok = QInputDialog.getText(ui.input, 'Input Dialog',
     #                                 'Enter db name:')

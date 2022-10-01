@@ -3,7 +3,7 @@ import json
 
 
 def connect(func):
-    def wrapper():
+    def wrapper(*args, **kwargs):
         result = None
         name = show_current()
         current_db = data_path + '/' + name + '.db'
@@ -13,7 +13,7 @@ def connect(func):
             sqlite_connection = sqlite3.connect(current_db)
             cursor = sqlite_connection.cursor()
             # func()
-            cursor.execute(func())
+            cursor.execute(func(*args, **kwargs))
             result = cursor.fetchall()
             sqlite_connection.commit()
             cursor.close()
@@ -72,124 +72,45 @@ def get_tables():
     return select
 
 
-# def get_tables():
-#     """forming SELECT sql task for getting tables list"""
-#     list_of_tables = None
-#     name = show_current()
-#     current_db = data_path + '/' + name + '.db'
-#     sqlite_connection = False
-#     try:
-#         sqlite_connection = sqlite3.connect(current_db)
-#         select = f'''SELECT * FROM sqlite_master WHERE type='table';'''
-#         cursor = sqlite_connection.cursor()
-#         cursor.execute(select)
-#         list_of_tables = cursor.fetchall()
-#         sqlite_connection.commit()
-#         cursor.close()
-#
-#     except sqlite3.Error as error:
-#         print("Ошибка при подключении к sqlite", error)
-#     finally:
-#         if sqlite_connection:
-#             sqlite_connection.close()
-#     return list_of_tables
-
-
+@connect
 def add_line(table_name, data):
     """forming INSERT sql task"""
-    name = show_current()
-    current_db = data_path + '/' + name + '.db'
-    sqlite_connection = False
-    try:
-        sqlite_connection = sqlite3.connect(current_db)
-        data_raw = data.replace(';', ',').replace('.', ',').replace(',', ',').replace(' ', ',')
-        data_raw = data_raw.replace(',,', ',').split(',')
-        string = ''
-        for item in data_raw:
-            string += "'" + item + "'"
-        data = string.replace("''", "', '")
-        insert = f'''INSERT INTO {table_name} VALUES ({data})'''
-        cursor = sqlite_connection.cursor()
-        cursor.execute(insert)
-        sqlite_connection.commit()
-        print("Added")
-        cursor.close()
-
-    except sqlite3.Error as error:
-        print("Ошибка при подключении к sqlite", error)
-    finally:
-        if (sqlite_connection):
-            sqlite_connection.close()
+    data_raw = data.replace(';', ',').replace('.', ',').replace(',', ',').replace(' ', ',')
+    data_raw = data_raw.replace(',,', ',').split(',')
+    string = ''
+    for item in data_raw:
+        string += "'" + item + "'"
+    data = string.replace("''", "', '")
+    insert = f'''INSERT INTO {table_name} VALUES ({data})'''
+    print("Added")
+    return insert
 
 
+@connect
 def add_column(table_name, col, data):
     """forming ALTER sql task"""
-
-    name = show_current()
-    current_db = data_path + '/' + name + '.db'
-    sqlite_connection = False
-    try:
-        sqlite_connection = sqlite3.connect(current_db)
-
-        insert = f'''ALTER TABLE {table_name} ADD COLUMN {col} {data}'''
-        print(insert)
-        cursor = sqlite_connection.cursor()
-        cursor.execute(insert)
-        sqlite_connection.commit()
-        print("Added")
-        cursor.close()
-
-    except sqlite3.Error as error:
-        print("Ошибка при подключении к sqlite", error)
-    finally:
-        if (sqlite_connection):
-            sqlite_connection.close()
+    alter = f'''ALTER TABLE {table_name} ADD COLUMN {col} {data}'''
+    print(alter)
+    print("Added")
+    return alter
 
 
+@connect
 def delete(table_name, col, data):
     """forming DELETE sql task"""
-    name = show_current()
-    current_db = data_path + '/' + name + '.db'
-    sqlite_connection = False
-    try:
-        sqlite_connection = sqlite3.connect(current_db)
-        cursor = sqlite_connection.cursor()
-        print(col, data)
-        sql_delete = f'''DELETE FROM {table_name} WHERE {col} = ?'''
-
-        cursor.execute(sql_delete, (data,))
-        sqlite_connection.commit()
-        print("Deleted")
-        cursor.close()
-
-    except sqlite3.Error as error:
-        print("Ошибка при подключении к sqlite", error)
-    finally:
-        if (sqlite_connection):
-            sqlite_connection.close()
+    print(col, data)
+    sql_delete = f'''DELETE FROM {table_name} WHERE {col} = {data}'''
+    print("Deleted")
+    return sql_delete
 
 
+@connect
 def select(table_name, data, request):
     """forming SELECT * sql task"""
-    name = show_current()
-    current_db = data_path + '/' + name + '.db'
-    sqlite_connection = False
-    try:
-        sqlite_connection = sqlite3.connect(current_db)
-        sql_select = f'''SELECT * FROM {table_name} WHERE {data} = ?'''
-        cursor = sqlite_connection.cursor()
-        cursor.execute(sql_select, (str(request),))
-        record = cursor.fetchall()
-        print(record)
-        print("Selected")
-        cursor.close()
-
-    except sqlite3.Error as error:
-        print("Ошибка при подключении к sqlite", error)
-    finally:
-        if (sqlite_connection):
-            sqlite_connection.close()
-    return record
+    sql_select = f'''SELECT * FROM {table_name} WHERE {data} = {str(request)}'''
+    print(sql_select)
+    print("Selected")
+    return sql_select
 
 
 def export_json(current_db):

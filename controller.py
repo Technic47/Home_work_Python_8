@@ -4,7 +4,6 @@ import messages
 import UI
 import sys
 import database as db
-from database import connect as connect
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 
@@ -27,6 +26,7 @@ def buttons():
 
 
 def get_lists():
+    """fills dropboxes in UI"""
     ui.current_cols_list.clear()
     ui.current_cols_list_2.clear()
     ui.clause_cols_list.clear()
@@ -60,6 +60,7 @@ def new():
 
 
 def form_request_new():
+    """forming correct request from user input"""
     global request_param
     string = ''
     match ui.new_column.text():
@@ -86,6 +87,7 @@ def form_request_new():
 
 
 def form_request_add_col():
+    """forming correct request from user input"""
     global request_param
     string = ''
     if ui.primary_key_column.isChecked():
@@ -105,6 +107,7 @@ def form_request_add_col():
 
 
 def form_request_select(text, index):
+    """forming correct request from user input"""
     global select_param
     select_param[index].append(text)
     table_1 = current_table()
@@ -209,21 +212,16 @@ def merge():
 
 
 def tables():
-    """scan dbs and add it to combobox"""
-    list = db.get_tables()
-    for table in list:
+    """scan tables and add it to combobox"""
+    table_list = db.get_tables()
+    for table in table_list:
         ui.table_list.addItem(table[1])
         ui.table_list_2.addItem(table[1])
 
 
 def get_cols(table_name):
-    name = db.show_current()
-    current_db = db.data_path + '/' + name + '.db'
-    dbase = sqlite3.connect(current_db)
-    cursor = dbase.cursor()
-
-    cursor.execute(f'PRAGMA table_info({table_name})')
-    column_names = [i[1] for i in cursor.fetchall()]
+    columns = db.get_col_names(table_name)
+    column_names = [i[1] for i in columns]
     return column_names
 
 
@@ -235,19 +233,17 @@ def select_table():
 
 
 def current_table():
+    """set selected in droplist as current"""
     table = ui.table_list.currentText()
     return table
 
 
 def table_draw(table_name, rows_count, fill):
     """ui tablewidget filling function"""
-    name = db.show_current()
-    current_db = db.data_path + '/' + name + '.db'
-    dbase = sqlite3.connect(current_db)
-    cursor = dbase.cursor()
-
-    cursor.execute(f'PRAGMA table_info({table_name})')
-    column_names = [i[1] for i in cursor.fetchall()]
+    columns = get_cols(table_name)
+    print(columns)
+    column_names = [i for i in columns]
+    print(column_names)
     ui.table.setColumnCount(len(column_names))
     for i in range(len(column_names)):
         ui.table.setColumnWidth(i, 75)

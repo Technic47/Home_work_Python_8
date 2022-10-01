@@ -3,6 +3,7 @@ import json
 
 
 def connect(func):
+    """checks connection to current DB. Shows errors"""
     def wrapper(*args, **kwargs):
         result = None
         name = show_current()
@@ -73,6 +74,13 @@ def get_tables():
 
 
 @connect
+def get_col_names(table_name):
+    """forming PRAGMA request for getting table titles"""
+    pragma = f'PRAGMA table_info({table_name})'
+    return pragma
+
+
+@connect
 def add_line(table_name, data):
     """forming INSERT sql task"""
     data_raw = data.replace(';', ',').replace('.', ',').replace(',', ',').replace(' ', ',')
@@ -114,6 +122,7 @@ def select(table_name, data, request):
 
 
 def export_json(current_db):
+    """no idea what it does"""
     connection, cursor = openConnection(current_db)
     # select all the tables from the database
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
@@ -131,6 +140,7 @@ def export_json(current_db):
 
 
 def getAllRecordsInTable(table_name, pathToSqliteDb):
+    """no idea what it does"""
     conn, curs = openConnection(pathToSqliteDb)
     conn.row_factory = dict_factory
     curs.execute("SELECT * FROM '{}' ".format(table_name))
@@ -142,6 +152,7 @@ def getAllRecordsInTable(table_name, pathToSqliteDb):
 
 
 def openConnection(pathToSqliteDb):
+    """no idea what it does, seems connects to DB"""
     connection = sqlite3.connect(pathToSqliteDb)
     connection.row_factory = dict_factory
     cursor = connection.cursor()
@@ -149,6 +160,7 @@ def openConnection(pathToSqliteDb):
 
 
 def dict_factory(cursor, row):
+    """no idea what it does"""
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
@@ -157,6 +169,7 @@ def dict_factory(cursor, row):
 
 @connect
 def table_delete(table_name):
+    """deletes table made for merge function"""
     print('deleting cache table')
     sql_delete = f'''DROP TABLE IF EXISTS {table_name}'''
     print('deleted')
@@ -165,6 +178,7 @@ def table_delete(table_name):
 
 @connect
 def merge(cols, clause, table_1, table_2, method):
+    """forming complex SELECT request with creating table for inserting results"""
     target = 'join_results'
     sql_join = f'''CREATE TABLE IF NOT EXISTS {target} AS SELECT {cols} FROM {table_1}
          {method}

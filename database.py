@@ -12,7 +12,7 @@ def connect(func):
 
             sqlite_connection = sqlite3.connect(current_db)
             cursor = sqlite_connection.cursor()
-            # func()
+
             cursor.execute(func(*args, **kwargs))
             result = cursor.fetchall()
             sqlite_connection.commit()
@@ -155,34 +155,23 @@ def dict_factory(cursor, row):
     return d
 
 
+@connect
+def table_delete(table_name):
+    print('deleting cache table')
+    sql_delete = f'''DROP TABLE IF EXISTS {table_name}'''
+    print('deleted')
+    return sql_delete
+
+
+@connect
 def merge(cols, clause, table_1, table_2, method):
-    name = show_current()
-    current_db = data_path + '/' + name + '.db'
     target = 'join_results'
-    sqlite_connection = False
-    try:
-        sqlite_connection = sqlite3.connect(current_db)
-        cursor = sqlite_connection.cursor()
-        print('deleting cache table')
-        sql_delete = f'''DROP TABLE IF EXISTS {target}'''
-        cursor.execute(sql_delete)
-        print('join prepare')
-        sql_join = f'''CREATE TABLE IF NOT EXISTS {target} AS SELECT {cols} FROM {table_1}
+    sql_join = f'''CREATE TABLE IF NOT EXISTS {target} AS SELECT {cols} FROM {table_1}
          {method}
           {table_2} ON {table_2}.{clause} = {table_1}.{clause};'''
-        print(sql_join)
-
-        cursor.execute(sql_join)
-        record = cursor.fetchall()
-        print("Joined")
-        cursor.close()
-
-    except sqlite3.Error as error:
-        print("Ошибка при подключении к sqlite", error)
-    finally:
-        if (sqlite_connection):
-            sqlite_connection.close()
-    return record, target
+    print(sql_join)
+    print("Joined")
+    return sql_join
 
 
 data_path = r'databases'

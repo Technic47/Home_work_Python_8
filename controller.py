@@ -4,6 +4,7 @@ import messages
 import UI
 import sys
 import database as db
+from database import connect as connect
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 
@@ -189,7 +190,7 @@ def select():
 def merge():
     """merge data from current table and second one"""
     global select_param
-    print('start')
+    target = 'join_results'
     cols = ', '.join(select_param[0])
     clause = select_param[1][0]
     table_1 = current_table()
@@ -200,36 +201,11 @@ def merge():
     if cols == '' or clause == '':
         messages.error("Empty line!", "Choose col names in message box.")
     else:
-        results = (db.merge(cols, clause, table_1, table_2, method))
-        print(results)
-        table_name = results[1]
-        open_table(table_name)
+        db.table_delete(target)
+        db.merge(cols, clause, table_1, table_2, method)
+        open_table(target)
     ui.input.setText('')
     select_param = [[], []]
-
-
-#     data = ui.input.text()
-#     if data == '':
-#         messages.error("Empty line!", "Write your request in message box.")
-#     else:
-#         path = ui.input.setText('')
-#         select = ui.merge_select
-#         match select.currentIndex():
-#             case 0:
-#                 data = select.currentText()
-#             case 1:
-#                 data = select.currentText()
-#             case 2:
-#                 data = select.currentText()
-#             case 3:
-#                 data = select.currentText()
-#             case 4:
-#                 data = select.currentText()
-#             case 5:
-#                 data = select.currentText()
-#             case 6:
-#                 data = select.currentText()
-#         db.merge(path, data)
 
 
 def tables():
@@ -284,7 +260,6 @@ def table_draw(table_name, rows_count, fill):
         for i in range(len(column_names)):
             ui.table.setItem(tablerow, i, QtWidgets.QTableWidgetItem(str(row[i])))
         tablerow += 1
-
     ui.table.setSortingEnabled(1)
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>DBinspector</class>
+ <widget class="QDialog" name="DBinspector">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -10,8 +10,23 @@
     <height>469</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>659</width>
+    <height>469</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>659</width>
+    <height>469</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>DBinspector</string>
+  </property>
+  <property name="whatsThis">
+   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Designed for simple operations with db tables.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
   </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">

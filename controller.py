@@ -241,9 +241,7 @@ def current_table():
 def table_draw(table_name, rows_count, fill):
     """ui tablewidget filling function"""
     columns = get_cols(table_name)
-    print(columns)
     column_names = [i for i in columns]
-    print(column_names)
     ui.table.setColumnCount(len(column_names))
     for i in range(len(column_names)):
         ui.table.setColumnWidth(i, 75)
@@ -291,7 +289,7 @@ select_param = [[], []]
 
 app = UI.QtWidgets.QApplication(sys.argv)
 MainWindow = UI.QtWidgets.QMainWindow()
-ui = UI.Ui_Dialog()
+ui = UI.Ui_DBinspector()
 ui.setupUi(MainWindow)
 MainWindow.show()
 buttons()

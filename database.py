@@ -2,27 +2,30 @@ import sqlite3
 import json
 
 
-# def connect(func):
-#     def wrapper():
-#         name = show_current()
-#         current_db = data_path + '/' + name + '.db'
-#         sqlite_connection = False
-#         try:
-#
-#             sqlite_connection = sqlite3.connect(current_db)
-#             cursor = sqlite_connection.cursor()
-#             # func()
-#             cursor.execute(func())
-#             sqlite_connection.commit()
-#             cursor.close()
-#
-#         except sqlite3.Error as error:
-#             print("Ошибка при подключении к sqlite", error)
-#         finally:
-#             if (sqlite_connection):
-#                 sqlite_connection.close()
-#
-#     return wrapper
+def connect(func):
+    def wrapper():
+        result = None
+        name = show_current()
+        current_db = data_path + '/' + name + '.db'
+        sqlite_connection = False
+        try:
+
+            sqlite_connection = sqlite3.connect(current_db)
+            cursor = sqlite_connection.cursor()
+            # func()
+            cursor.execute(func())
+            result = cursor.fetchall()
+            sqlite_connection.commit()
+            cursor.close()
+
+        except sqlite3.Error as error:
+            print("Ошибка при подключении к sqlite", error)
+        finally:
+            if sqlite_connection:
+                sqlite_connection.close()
+        return result
+
+    return wrapper
 
 
 def create(table_name: str, data: str):
@@ -44,7 +47,7 @@ def create(table_name: str, data: str):
     except sqlite3.Error as error:
         print("Ошибка при подключении к sqlite", error)
     finally:
-        if (sqlite_connection):
+        if sqlite_connection:
             sqlite_connection.close()
     return True
 
@@ -62,26 +65,34 @@ def show_current() -> str:
     return current_database
 
 
+@connect
 def get_tables():
     """forming SELECT sql task for getting tables list"""
-    name = show_current()
-    current_db = data_path + '/' + name + '.db'
-    sqlite_connection = False
-    try:
-        sqlite_connection = sqlite3.connect(current_db)
-        select = f'''SELECT * FROM sqlite_master WHERE type='table';'''
-        cursor = sqlite_connection.cursor()
-        cursor.execute(select)
-        list_of_tables = cursor.fetchall()
-        sqlite_connection.commit()
-        cursor.close()
+    select = f'''SELECT * FROM sqlite_master WHERE type='table';'''
+    return select
 
-    except sqlite3.Error as error:
-        print("Ошибка при подключении к sqlite", error)
-    finally:
-        if (sqlite_connection):
-            sqlite_connection.close()
-    return list_of_tables
+
+# def get_tables():
+#     """forming SELECT sql task for getting tables list"""
+#     list_of_tables = None
+#     name = show_current()
+#     current_db = data_path + '/' + name + '.db'
+#     sqlite_connection = False
+#     try:
+#         sqlite_connection = sqlite3.connect(current_db)
+#         select = f'''SELECT * FROM sqlite_master WHERE type='table';'''
+#         cursor = sqlite_connection.cursor()
+#         cursor.execute(select)
+#         list_of_tables = cursor.fetchall()
+#         sqlite_connection.commit()
+#         cursor.close()
+#
+#     except sqlite3.Error as error:
+#         print("Ошибка при подключении к sqlite", error)
+#     finally:
+#         if sqlite_connection:
+#             sqlite_connection.close()
+#     return list_of_tables
 
 
 def add_line(table_name, data):
